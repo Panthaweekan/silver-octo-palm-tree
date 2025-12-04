@@ -186,7 +186,7 @@ export function MealFormDialog({
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="date" className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-gray-500" />
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
                   Date
                 </Label>
                 <Input
@@ -201,7 +201,7 @@ export function MealFormDialog({
 
               <div className="space-y-2">
                 <Label htmlFor="meal_type" className="flex items-center gap-2">
-                  <Utensils className="h-4 w-4 text-gray-500" />
+                  <Utensils className="h-4 w-4 text-muted-foreground" />
                   Meal Type
                 </Label>
                 <Select
@@ -228,7 +228,7 @@ export function MealFormDialog({
             {/* Food Name */}
             <div className="space-y-2">
               <Label htmlFor="food_name" className="flex items-center gap-2">
-                <Utensils className="h-4 w-4 text-gray-500" />
+                <Utensils className="h-4 w-4 text-muted-foreground" />
                 Food Name
               </Label>
               <Input
@@ -242,7 +242,7 @@ export function MealFormDialog({
 
             {/* Macros Section */}
             <div className="space-y-3">
-              <Label className="text-sm font-medium text-gray-500">
+              <Label className="text-sm font-medium text-muted-foreground">
                 Macronutrients (Optional)
               </Label>
               <div className="grid grid-cols-3 gap-4">
@@ -323,7 +323,7 @@ export function MealFormDialog({
             {/* Notes */}
             <div className="space-y-2">
               <Label htmlFor="notes" className="flex items-center gap-2">
-                <FileText className="h-4 w-4 text-gray-500" />
+                <FileText className="h-4 w-4 text-muted-foreground" />
                 Notes
               </Label>
               <Input

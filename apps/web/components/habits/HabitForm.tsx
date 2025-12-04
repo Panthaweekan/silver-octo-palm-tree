@@ -119,7 +119,7 @@ export function HabitForm({ userId }: { userId: string }) {
               min={1} 
               {...register('target_count', { valueAsNumber: true })} 
             />
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               How many times per day? (Default: 1)
             </p>
             {errors.target_count && (

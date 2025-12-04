@@ -408,15 +408,12 @@ CREATE OR REPLACE VIEW daily_summary AS
 SELECT
   p.id AS user_id,
   CURRENT_DATE AS date,
-  COALESCE(SUM(m.calories), 0) AS total_calories_consumed,
-  COALESCE(SUM(w.calories_burned), 0) AS total_calories_burned,
-  COALESCE(SUM(w.duration_minutes), 0) AS total_workout_minutes,
-  COUNT(DISTINCT w.id) AS workout_count,
-  COUNT(DISTINCT m.id) AS meal_count
-FROM public.profiles p
-LEFT JOIN public.meals m ON m.user_id = p.id AND m.date = CURRENT_DATE
-LEFT JOIN public.workouts w ON w.user_id = p.id AND w.date = CURRENT_DATE
-GROUP BY p.id;
+  COALESCE((SELECT SUM(calories) FROM public.meals m WHERE m.user_id = p.id AND m.date = CURRENT_DATE), 0) AS total_calories_consumed,
+  COALESCE((SELECT SUM(calories_burned) FROM public.workouts w WHERE w.user_id = p.id AND w.date = CURRENT_DATE), 0) AS total_calories_burned,
+  COALESCE((SELECT SUM(duration_minutes) FROM public.workouts w WHERE w.user_id = p.id AND w.date = CURRENT_DATE), 0) AS total_workout_minutes,
+  COALESCE((SELECT COUNT(*) FROM public.workouts w WHERE w.user_id = p.id AND w.date = CURRENT_DATE), 0) AS workout_count,
+  COALESCE((SELECT COUNT(*) FROM public.meals m WHERE m.user_id = p.id AND m.date = CURRENT_DATE), 0) AS meal_count
+FROM public.profiles p;
 
 -- =====================================================
 -- SEED DATA: Common food items

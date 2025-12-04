@@ -2,15 +2,15 @@
 import { createServerClient } from '@/lib/supabase/server'
 import { RecentMealsView } from './RecentMealsView'
 
-export async function RecentMeals({ userId }: { userId: string }) {
+export async function RecentMeals({ userId, date }: { userId: string; date?: string }) {
   const supabase = createServerClient()
-  const today = new Date().toISOString().split('T')[0]
+  const queryDate = date || new Date().toISOString().split('T')[0]
 
   const { data: meals } = await supabase
     .from('meals')
     .select('*')
     .eq('user_id', userId)
-    .eq('date', today)
+    .eq('date', queryDate)
     .order('created_at', { ascending: false })
 
   const todayMeals = meals || []

@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import {
   ComposedChart,
   Line,
@@ -12,16 +13,23 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
 
 interface CalorieWeightChartProps {
   data: {
     date: string
     weight: number | null
     calories: number
+    bmr?: number
+    tdee?: number
   }[]
 }
 
 export function CalorieWeightChart({ data }: CalorieWeightChartProps) {
+  const [showBMR, setShowBMR] = useState(false)
+  const [showTDEE, setShowTDEE] = useState(false)
+
   if (data.length === 0) {
     return (
       <Card>
@@ -39,8 +47,18 @@ export function CalorieWeightChart({ data }: CalorieWeightChartProps) {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Weight vs. Calories</CardTitle>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center space-x-2">
+            <Switch id="show-bmr" checked={showBMR} onCheckedChange={setShowBMR} />
+            <Label htmlFor="show-bmr">BMR</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch id="show-tdee" checked={showTDEE} onCheckedChange={setShowTDEE} />
+            <Label htmlFor="show-tdee">TDEE</Label>
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="h-[300px]">
@@ -82,10 +100,32 @@ export function CalorieWeightChart({ data }: CalorieWeightChartProps) {
                 yAxisId="right"
                 type="monotone" 
                 dataKey="calories" 
-                name="Calories"
+                name="Calories Consumed"
                 fill="#dcfce7" 
                 stroke="#22c55e" 
               />
+              {showBMR && (
+                <Line
+                  yAxisId="right"
+                  type="monotone"
+                  dataKey="bmr"
+                  name="BMR"
+                  stroke="#f59e0b"
+                  strokeDasharray="5 5"
+                  dot={false}
+                />
+              )}
+              {showTDEE && (
+                <Line
+                  yAxisId="right"
+                  type="monotone"
+                  dataKey="tdee"
+                  name="TDEE"
+                  stroke="#ef4444"
+                  strokeDasharray="3 3"
+                  dot={false}
+                />
+              )}
               <Line 
                 yAxisId="left"
                 type="monotone" 
