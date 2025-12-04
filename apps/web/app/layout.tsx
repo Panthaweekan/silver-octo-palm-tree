@@ -1,12 +1,24 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Kanit } from 'next/font/google'
 import './globals.css'
+import { Toaster } from '@/components/ui/toaster'
+import { cn } from '@/lib/utils'
+import { LanguageProvider } from '@/components/providers/LanguageProvider'
+import { ThemeProvider } from '@/components/providers/ThemeProvider'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const kanit = Kanit({ 
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  subsets: ['latin', 'thai'],
+  variable: '--font-kanit'
+})
 
 export const metadata: Metadata = {
-  title: 'FitJourney - Track Your Fitness Journey',
-  description: 'Track workouts, meals, weight, and habits with AI-powered insights',
+  title: {
+    template: '%s | FitJourney',
+    default: 'FitJourney',
+  },
+  description: 'Your personal fitness journey tracker',
 }
 
 export default function RootLayout({
@@ -16,7 +28,24 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>{children}</body>
+      <body className={cn(
+        inter.variable,
+        kanit.variable,
+        "min-h-screen bg-background font-sans antialiased",
+        "bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background"
+      )}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <LanguageProvider>
+            {children}
+            <Toaster />
+          </LanguageProvider>
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

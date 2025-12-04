@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dumbbell, Loader2 } from 'lucide-react'
+import { BrandIcon } from '@/components/ui/logo'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -54,17 +55,17 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <Link href="/" className="flex items-center space-x-2">
-            <Dumbbell className="h-10 w-10 text-blue-600" />
-            <span className="text-3xl font-bold text-gray-900">FitJourney</span>
+            <BrandIcon className="h-10 w-10" />
+            <span className="text-3xl font-bold text-foreground">FitJourney</span>
           </Link>
         </div>
 
-        <Card>
+        <Card className="border-border/50 bg-card/50 backdrop-blur-xl">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold text-center">เข้าสู่ระบบ</CardTitle>
             <CardDescription className="text-center">
@@ -83,6 +84,7 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   disabled={loading}
+                  className="bg-background/50"
                 />
               </div>
               <div className="space-y-2">
@@ -95,11 +97,12 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   disabled={loading}
+                  className="bg-background/50"
                 />
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+                <div className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-md text-sm">
                   {error}
                 </div>
               )}
@@ -118,17 +121,17 @@ export default function LoginPage() {
 
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
+                <div className="w-full border-t border-border"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">หรือ</span>
+                <span className="px-2 bg-card text-muted-foreground">หรือ</span>
               </div>
             </div>
 
             <Button
               type="button"
               variant="outline"
-              className="w-full"
+              className="w-full bg-background/50"
               onClick={handleGoogleLogin}
               disabled={loading}
             >
@@ -154,9 +157,9 @@ export default function LoginPage() {
             </Button>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <div className="text-sm text-center text-gray-600">
+            <div className="text-sm text-center text-muted-foreground">
               ยังไม่มีบัญชี?{' '}
-              <Link href="/register" className="text-blue-600 hover:underline font-medium">
+              <Link href="/register" className="text-primary hover:underline font-medium">
                 สมัครสมาชิก
               </Link>
             </div>
@@ -164,7 +167,7 @@ export default function LoginPage() {
         </Card>
 
         <div className="mt-8 text-center">
-          <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">
+          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             ← กลับไปหน้าแรก
           </Link>
         </div>
