@@ -1,0 +1,267 @@
+2025-12-04T08:12:22.701415Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo/cookies/1.cookie"), AnchoredSystemPathBuf(".turbo/cookies/.turbo-cookie")}
+2025-12-04T08:12:22.701424Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-12-04T08:12:23.501621Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/next-env.d.ts")}
+2025-12-04T08:12:23.501631Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T08:12:24.001429Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/.next")}
+2025-12-04T08:12:24.001448Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T08:12:24.024947Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T09:10:45.937518Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("docs/SETUP_GUIDE.md"), AnchoredSystemPathBuf("SETUP_CHECKLIST.md"), AnchoredSystemPathBuf("docs/QUICK_REFERENCE.md")}
+2025-12-04T09:10:45.937538Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-12-04T11:41:11.892687Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/.turbo")}
+2025-12-04T11:41:11.892710Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T11:41:11.892731Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T11:52:50.108597Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/next.config.js.tmp.41268.1764849170074"), AnchoredSystemPathBuf("apps/web/next.config.js")}
+2025-12-04T11:52:50.108607Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T11:56:23.018898Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/page.tsx"), AnchoredSystemPathBuf("apps/web/app/dashboard/page.tsx.tmp.41268.1764849382957")}
+2025-12-04T11:56:23.018911Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T11:56:23.117605Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/page.tsx"), AnchoredSystemPathBuf("apps/web/app/dashboard/page.tsx.tmp.41268.1764849383113"), AnchoredSystemPathBuf("apps/web/app/dashboard/page.tsx.tmp.41268.1764849383021")}
+2025-12-04T11:56:23.117619Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:00:12.224168Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/lib/validations.ts"), AnchoredSystemPathBuf("apps/web/lib/validations.ts.tmp.41268.1764849612127")}
+2025-12-04T12:00:12.224180Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:02:08.727331Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/lib/formatters.ts.tmp.41268.1764849728654"), AnchoredSystemPathBuf("apps/web/lib/formatters.ts")}
+2025-12-04T12:02:08.727341Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:02:28.027993Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/lib/constants.ts"), AnchoredSystemPathBuf("apps/web/lib/constants.ts.tmp.41268.1764849747947")}
+2025-12-04T12:02:28.028000Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:02:38.728150Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/shared")}
+2025-12-04T12:02:38.728163Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:02:38.728190Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T12:02:48.327443Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/shared/EmptyState.tsx"), AnchoredSystemPathBuf("apps/web/components/shared/EmptyState.tsx.tmp.41268.1764849768248")}
+2025-12-04T12:02:48.327454Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:02:54.228350Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/shared/LoadingSpinner.tsx.tmp.41268.1764849774162"), AnchoredSystemPathBuf("apps/web/components/shared/LoadingSpinner.tsx")}
+2025-12-04T12:02:54.228363Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:02:59.627940Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/shared/PageHeader.tsx.tmp.41268.1764849779530"), AnchoredSystemPathBuf("apps/web/components/shared/PageHeader.tsx")}
+2025-12-04T12:02:59.627948Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:03:15.628909Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/ui/dialog.tsx"), AnchoredSystemPathBuf("apps/web/components/ui/dialog.tsx.tmp.41268.1764849795541")}
+2025-12-04T12:03:15.628920Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:03:22.728642Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/ui/textarea.tsx"), AnchoredSystemPathBuf("apps/web/components/ui/textarea.tsx.tmp.41268.1764849802668")}
+2025-12-04T12:03:22.728656Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:03:41.928521Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/ui/select.tsx"), AnchoredSystemPathBuf("apps/web/components/ui/select.tsx.tmp.41268.1764849821838")}
+2025-12-04T12:03:41.928530Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:03:51.529839Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/hooks/use-toast.ts"), AnchoredSystemPathBuf("apps/web/hooks"), AnchoredSystemPathBuf("apps/web/hooks/use-toast.ts.tmp.41268.1764849831463")}
+2025-12-04T12:03:51.529848Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:04:03.828708Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/weight"), AnchoredSystemPathBuf("apps/web/components/weight")}
+2025-12-04T12:04:03.828717Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:04:03.848576Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T12:04:15.830466Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/weight/page.tsx"), AnchoredSystemPathBuf("apps/web/app/dashboard/weight/page.tsx.tmp.41268.1764849855767")}
+2025-12-04T12:04:15.830477Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:04:43.830854Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/weight/WeightForm.tsx"), AnchoredSystemPathBuf("apps/web/components/weight/WeightForm.tsx.tmp.41268.1764849883808")}
+2025-12-04T12:04:43.830865Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:05:12.031316Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/weight/WeightStats.tsx.tmp.41268.1764849911932"), AnchoredSystemPathBuf("apps/web/components/weight/WeightStats.tsx")}
+2025-12-04T12:05:12.031326Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:05:36.132138Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/weight/WeightList.tsx.tmp.41268.1764849936055"), AnchoredSystemPathBuf("apps/web/components/weight/WeightList.tsx")}
+2025-12-04T12:05:36.132149Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:06:00.932671Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/weight/WeightChart.tsx.tmp.41268.1764849960916"), AnchoredSystemPathBuf("apps/web/components/weight/WeightChart.tsx")}
+2025-12-04T12:06:00.932684Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:06:30.934052Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/weight/WeightChart.tsx.tmp.41268.1764849990919"), AnchoredSystemPathBuf("apps/web/components/weight/WeightChart.tsx")}
+2025-12-04T12:06:30.934068Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:11:44.041965Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/lib/workout-utils.ts.tmp.41268.1764850303962"), AnchoredSystemPathBuf("apps/web/lib/workout-utils.ts")}
+2025-12-04T12:11:44.041987Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:11:48.541201Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/workouts"), AnchoredSystemPathBuf("apps/web/components/workouts")}
+2025-12-04T12:11:48.541213Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:11:48.541236Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T12:12:08.942130Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/workouts/page.tsx"), AnchoredSystemPathBuf("apps/web/app/dashboard/workouts/page.tsx.tmp.41268.1764850328863")}
+2025-12-04T12:12:08.942140Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:12:43.742521Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/workouts/WorkoutForm.tsx"), AnchoredSystemPathBuf("apps/web/components/workouts/WorkoutForm.tsx.tmp.41268.1764850363674")}
+2025-12-04T12:12:43.742529Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:13:08.243036Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/workouts/WorkoutCard.tsx"), AnchoredSystemPathBuf("apps/web/components/workouts/WorkoutCard.tsx.tmp.41268.1764850388231")}
+2025-12-04T12:13:08.243050Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:14:35.046417Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("")}
+2025-12-04T12:14:35.046440Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({}))
+2025-12-04T12:16:22.248762Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("docs/IMPLEMENTATION_PROGRESS.md"), AnchoredSystemPathBuf("docs/IMPLEMENTATION_PROGRESS.md.tmp.41268.1764850582186")}
+2025-12-04T12:16:22.248770Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-12-04T12:21:35.656269Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/workouts/WorkoutStats.tsx")}
+2025-12-04T12:21:35.656294Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:21:35.755630Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/workouts/WorkoutStats.tsx")}
+2025-12-04T12:21:35.755638Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:21:46.856403Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/workouts/WorkoutList.tsx")}
+2025-12-04T12:21:46.856419Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:21:46.956637Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/workouts/WorkoutList.tsx")}
+2025-12-04T12:21:46.956655Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:21:46.956725Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T12:32:53.018994Z  WARN turborepo_lib::package_changes_watcher: file event lagged
+2025-12-04T12:32:53.471438Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/package.json")}
+2025-12-04T12:32:53.471454Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:32:53.570252Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("package-lock.json")}
+2025-12-04T12:32:53.570265Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-12-04T12:37:08.277796Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/meals"), AnchoredSystemPathBuf("apps/web/components/meals/MealForm.tsx")}
+2025-12-04T12:37:08.277821Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:37:08.377336Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/meals/MealForm.tsx")}
+2025-12-04T12:37:08.377348Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:37:08.377379Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T12:37:08.476258Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/meals")}
+2025-12-04T12:37:08.476267Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:37:08.476953Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T12:37:33.378192Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/meals/MealCard.tsx")}
+2025-12-04T12:37:33.378203Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:37:35.378610Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/meals/MealList.tsx")}
+2025-12-04T12:37:35.378625Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:37:49.881852Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/meals/page.tsx")}
+2025-12-04T12:37:49.881879Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:41:38.184692Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/workouts/WorkoutForm.tsx")}
+2025-12-04T12:41:38.184733Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:42:47.285893Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/meals/MealForm.tsx")}
+2025-12-04T12:42:47.285912Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:46:58.692259Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/weight/WeightForm.tsx")}
+2025-12-04T12:46:58.692281Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:47:41.692455Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/weight/WeightChart.tsx")}
+2025-12-04T12:47:41.692470Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:48:01.407255Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/weight/page.tsx")}
+2025-12-04T12:48:01.407265Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:54:43.002961Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/lib/constants.ts")}
+2025-12-04T12:54:43.002985Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:54:45.002331Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/lib/fitness-utils.ts")}
+2025-12-04T12:54:45.002344Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:54:45.102557Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/lib/fitness-utils.ts")}
+2025-12-04T12:54:45.102576Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:54:45.102624Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T12:55:31.104303Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/SmartCalculator.tsx")}
+2025-12-04T12:55:31.104319Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:55:33.103721Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T12:55:33.103739Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:56:04.205479Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/page.tsx")}
+2025-12-04T12:56:04.205495Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:56:35.805740Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/ui/progress.tsx")}
+2025-12-04T12:56:35.805772Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:56:35.905638Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/ui/progress.tsx")}
+2025-12-04T12:56:35.905655Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:56:35.905709Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T12:56:37.406330Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/page.tsx")}
+2025-12-04T12:56:37.406388Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:57:20.406865Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/stats.tsx")}
+2025-12-04T12:57:20.406884Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:57:25.805890Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/recent-workouts.tsx")}
+2025-12-04T12:57:25.805909Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:57:41.207925Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/recent-meals.tsx")}
+2025-12-04T12:57:41.207941Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:57:43.307249Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/page.tsx")}
+2025-12-04T12:57:43.307264Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T12:58:17.308226Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/ui/progress.tsx")}
+2025-12-04T12:58:17.308240Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:07:10.121181Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/stats.tsx")}
+2025-12-04T13:07:10.121208Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:07:27.121414Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/page.tsx")}
+2025-12-04T13:07:27.121426Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:07:31.021209Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/page.tsx")}
+2025-12-04T13:07:31.021222Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:07:33.021926Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T13:07:33.021941Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:07:35.022536Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/recent-workouts.tsx")}
+2025-12-04T13:07:35.022556Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:07:37.021998Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/recent-meals.tsx")}
+2025-12-04T13:07:37.022014Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:10:38.725943Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/page.tsx")}
+2025-12-04T13:10:38.726008Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:13:15.330097Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/shell.tsx")}
+2025-12-04T13:13:15.330111Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:13:24.130644Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/sidebar.tsx")}
+2025-12-04T13:13:24.130653Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:13:28.629804Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/header.tsx")}
+2025-12-04T13:13:28.629828Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:13:29.830667Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/layout.tsx")}
+2025-12-04T13:13:29.830683Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:14:05.621045Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/sidebar.tsx")}
+2025-12-04T13:14:05.621061Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:14:06.820247Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T13:14:06.820263Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:17:24.823980Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/sidebar.tsx")}
+2025-12-04T13:17:24.823991Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:17:50.424692Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T13:17:50.424707Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:20:57.628265Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T13:20:57.628278Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:21:04.928454Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T13:21:04.928469Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:21:05.128308Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T13:21:05.128322Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:21:05.131039Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T13:21:08.329281Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T13:21:08.329297Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:21:08.332192Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T13:21:08.529981Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T13:21:08.529994Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:21:08.544699Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T13:21:33.529579Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T13:21:33.529599Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:21:43.628851Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T13:21:43.628871Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:21:45.029578Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T13:21:45.029598Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:21:46.129582Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T13:21:46.129596Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:21:46.129633Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T13:21:46.329905Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/dashboard/GoalsCard.tsx")}
+2025-12-04T13:21:46.329998Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:21:46.344073Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T13:22:30.531193Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/.next")}
+2025-12-04T13:22:30.531201Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:22:30.531223Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T13:22:46.530310Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/.next")}
+2025-12-04T13:22:46.530326Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:22:46.539188Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T13:29:49.625215Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits"), AnchoredSystemPathBuf("apps/web/components/habits/HabitForm.tsx")}
+2025-12-04T13:29:49.625237Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:29:49.724817Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitForm.tsx")}
+2025-12-04T13:29:49.724833Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:29:49.724892Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T13:29:51.125517Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitCard.tsx")}
+2025-12-04T13:29:51.125534Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:29:59.724699Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitList.tsx")}
+2025-12-04T13:29:59.724711Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:30:01.846277Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/habits"), AnchoredSystemPathBuf("apps/web/app/dashboard/habits/page.tsx")}
+2025-12-04T13:30:01.846293Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:34:56.328939Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitCard.tsx")}
+2025-12-04T13:34:56.328960Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:34:57.529441Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitForm.tsx")}
+2025-12-04T13:34:57.529451Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:35:53.331869Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitCard.tsx")}
+2025-12-04T13:35:53.331886Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:35:54.531533Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitForm.tsx")}
+2025-12-04T13:35:54.531555Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:51:34.846894Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitForm.tsx")}
+2025-12-04T13:51:34.846933Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:52:08.847135Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitCard.tsx")}
+2025-12-04T13:52:08.847155Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:52:10.047467Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitCard.tsx")}
+2025-12-04T13:52:10.047481Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:52:11.247584Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitList.tsx")}
+2025-12-04T13:52:11.247628Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:52:11.247699Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T13:53:03.446602Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitCard.tsx")}
+2025-12-04T13:53:03.446626Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:53:04.646529Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitList.tsx")}
+2025-12-04T13:53:04.646539Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:53:04.676369Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T13:53:25.645937Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitCard.tsx")}
+2025-12-04T13:53:25.645946Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:53:37.646205Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitForm.tsx")}
+2025-12-04T13:53:37.646219Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:53:37.646272Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T13:54:07.846081Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitForm.tsx")}
+2025-12-04T13:54:07.846103Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:54:31.845439Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitForm.tsx")}
+2025-12-04T13:54:31.845461Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:55:06.245767Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitForm.tsx")}
+2025-12-04T13:55:06.245783Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T13:55:37.845267Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/habits/HabitForm.tsx")}
+2025-12-04T13:55:37.845281Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T14:04:06.044284Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/.next")}
+2025-12-04T14:04:06.044322Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T14:04:06.044404Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T14:04:42.343446Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/.next")}
+2025-12-04T14:04:42.343466Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T14:04:42.371930Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T14:09:31.642413Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/journal/JournalForm.tsx"), AnchoredSystemPathBuf("apps/web/components/journal")}
+2025-12-04T14:09:31.642423Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T14:09:40.341851Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/journal/JournalHistory.tsx")}
+2025-12-04T14:09:40.341867Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T14:09:40.459976Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/journal/JournalHistory.tsx")}
+2025-12-04T14:09:40.459990Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T14:09:46.542487Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/app/dashboard/journal"), AnchoredSystemPathBuf("apps/web/app/dashboard/journal/page.tsx")}
+2025-12-04T14:09:46.542502Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T14:11:38.341977Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/journal/JournalForm.tsx")}
+2025-12-04T14:11:38.341991Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T14:11:38.342026Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-12-04T14:11:40.041605Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/journal/JournalForm.tsx")}
+2025-12-04T14:11:40.041620Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2025-12-04T14:11:48.741543Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/components/journal/JournalForm.tsx")}
+2025-12-04T14:11:48.741586Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@fitjourney/web"), path: AnchoredSystemPathBuf("apps/web") }}))
