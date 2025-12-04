@@ -53,7 +53,7 @@ export function GoalsCard({ userId, profile, dailySummary }: GoalsCardProps) {
       <CardContent className="flex-1 flex flex-col justify-between gap-6 relative">
         {/* Main Progress Circle or Bar */}
         <div className="space-y-2">
-          <div className="flex justify-between items-end">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
             <div>
               <p className="text-sm text-muted-foreground">{t('dashboard.netIntake')}</p>
               <div className="flex items-baseline gap-1">

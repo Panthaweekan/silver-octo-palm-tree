@@ -22,6 +22,8 @@ export function LandingPage() {
               FitJourney
             </span>
           </div>
+          
+          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             <Link href="#features" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
               {t('landing.nav.features')}
@@ -30,14 +32,29 @@ export function LandingPage() {
               {t('landing.nav.howItWorks')}
             </Link>
           </div>
-          <div className="flex items-center gap-4">
+          
+          <div className="hidden md:flex items-center gap-4">
             <Link href="/login">
-              <Button variant="ghost" size="sm" className="hidden sm:flex">
+              <Button variant="ghost" size="sm">
                 {t('landing.nav.login')}
               </Button>
             </Link>
             <Link href="/register">
               <Button size="sm" className="rounded-full px-6">
+                {t('landing.nav.getStarted')}
+              </Button>
+            </Link>
+          </div>
+
+          {/* Mobile Nav Toggle */}
+          <div className="md:hidden flex items-center gap-4">
+             <Link href="/login">
+              <Button variant="ghost" size="sm">
+                {t('landing.nav.login')}
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button size="sm" className="rounded-full">
                 {t('landing.nav.getStarted')}
               </Button>
             </Link>

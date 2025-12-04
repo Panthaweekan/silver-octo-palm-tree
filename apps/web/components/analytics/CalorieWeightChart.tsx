@@ -47,7 +47,7 @@ export function CalorieWeightChart({ data }: CalorieWeightChartProps) {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <CardTitle>Weight vs. Calories</CardTitle>
         <div className="flex items-center gap-4">
           <div className="flex items-center space-x-2">

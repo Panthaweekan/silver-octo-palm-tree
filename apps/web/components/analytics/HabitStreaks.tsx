@@ -36,11 +36,11 @@ export function HabitStreaks({ habits }: HabitStreaksProps) {
       <CardContent className="space-y-6">
         {habits.map((habit) => (
           <div key={habit.id} className="space-y-2">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <div className="flex items-center gap-2">
-                <span className="font-medium">{habit.name}</span>
+                <span className="font-medium truncate">{habit.name}</span>
                 {habit.streak > 0 && (
-                  <div className="flex items-center gap-1 text-xs font-medium text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full">
+                  <div className="flex items-center gap-1 text-xs font-medium text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full shrink-0">
                     <Flame className="h-3 w-3 fill-orange-500" />
                     {habit.streak} day streak
                   </div>

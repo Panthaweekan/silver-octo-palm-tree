@@ -69,8 +69,8 @@ export function DiaryView({
   return (
     <div className="space-y-6">
       {/* Date Navigation */}
-      <div className="flex items-center justify-between bg-card/50 backdrop-blur-sm p-4 rounded-xl border border-border/50">
-        <Button variant="ghost" size="icon" onClick={handlePrevDay}>
+      <div className="flex items-center justify-between bg-card/50 backdrop-blur-sm p-4 rounded-xl border border-border/50 gap-2">
+        <Button variant="ghost" size="icon" onClick={handlePrevDay} className="shrink-0">
           <ChevronLeft className="h-5 w-5" />
         </Button>
 
@@ -79,12 +79,12 @@ export function DiaryView({
             <Button
               variant="outline"
               className={cn(
-                "w-[240px] justify-start text-left font-normal",
+                "flex-1 justify-start text-left font-normal min-w-[140px]",
                 !date && "text-muted-foreground"
               )}
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {format(currentDate, 'PPP')}
+              <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
+              <span className="truncate">{format(currentDate, 'PPP')}</span>
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="center">
@@ -97,49 +97,49 @@ export function DiaryView({
           </PopoverContent>
         </Popover>
 
-        <Button variant="ghost" size="icon" onClick={handleNextDay} disabled={format(currentDate, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd')}>
+        <Button variant="ghost" size="icon" onClick={handleNextDay} disabled={format(currentDate, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd')} className="shrink-0">
           <ChevronRight className="h-5 w-5" />
         </Button>
       </div>
 
       {/* Daily Summary Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4">
             <CardTitle className="text-sm font-medium">Calories</CardTitle>
             <span className="text-xs text-muted-foreground">Net</span>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4 pt-0">
             <div className="text-2xl font-bold">{summary.caloriesConsumed - summary.caloriesBurned}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground truncate">
               {summary.caloriesConsumed} in - {summary.caloriesBurned} out
             </p>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4">
             <CardTitle className="text-sm font-medium">Protein</CardTitle>
             <span className="text-xs text-muted-foreground">g</span>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4 pt-0">
             <div className="text-2xl font-bold text-blue-500">{summary.protein.toFixed(1)}</div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4">
             <CardTitle className="text-sm font-medium">Carbs</CardTitle>
             <span className="text-xs text-muted-foreground">g</span>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4 pt-0">
             <div className="text-2xl font-bold text-green-500">{summary.carbs.toFixed(1)}</div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4">
             <CardTitle className="text-sm font-medium">Fat</CardTitle>
             <span className="text-xs text-muted-foreground">g</span>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4 pt-0">
             <div className="text-2xl font-bold text-yellow-500">{summary.fat.toFixed(1)}</div>
           </CardContent>
         </Card>
@@ -147,21 +147,21 @@ export function DiaryView({
 
       {/* Quick Actions & Timeline */}
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <h2 className="text-lg font-semibold tracking-tight">Timeline</h2>
-          <div className="flex gap-2">
+          <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar">
             <MealFormDialog userId={userId}>
-              <Button size="sm" variant="outline">
+              <Button size="sm" variant="outline" className="shrink-0">
                 <Plus className="h-4 w-4 mr-2" /> Log Meal
               </Button>
             </MealFormDialog>
             <WorkoutFormDialog userId={userId} userWeight={70}>
-              <Button size="sm" variant="outline">
+              <Button size="sm" variant="outline" className="shrink-0">
                 <Plus className="h-4 w-4 mr-2" /> Log Workout
               </Button>
             </WorkoutFormDialog>
             <WeightFormDialog userId={userId}>
-               <Button size="sm" variant="outline">
+               <Button size="sm" variant="outline" className="shrink-0">
                 <Plus className="h-4 w-4 mr-2" /> Log Weight
               </Button>
             </WeightFormDialog>
