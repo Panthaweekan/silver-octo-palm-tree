@@ -170,7 +170,7 @@ export function DiaryView({ userId, date, children, summary }: DiaryViewProps) {
         <TabsContent value="meals" className="space-y-4">
           {/* Filtered view logic would go here, or just reuse the children which are already sections */}
           <div className="text-sm text-muted-foreground">
-            Switch to 'All' to see the full timeline for now.
+            Switch to &apos;All&apos; to see the full timeline for now.
           </div>
         </TabsContent>
         
