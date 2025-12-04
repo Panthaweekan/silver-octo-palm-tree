@@ -19,6 +19,11 @@ export const metadata: Metadata = {
     default: 'FitJourney',
   },
   description: 'Your personal fitness journey tracker',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'FitJourney',
+  },
 }
 
 export const viewport = {
