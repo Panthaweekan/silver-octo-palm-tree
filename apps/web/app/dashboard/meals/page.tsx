@@ -1,4 +1,6 @@
 import { createServerClient } from '@/lib/supabase/server'
+
+export const dynamic = 'force-dynamic'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { Button } from '@/components/ui/button'
 import { Plus, Apple } from 'lucide-react'
