@@ -1,4 +1,6 @@
 import { createServerClient } from '@/lib/supabase/server'
+
+export const dynamic = 'force-dynamic'
 import { redirect } from 'next/navigation'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader'
