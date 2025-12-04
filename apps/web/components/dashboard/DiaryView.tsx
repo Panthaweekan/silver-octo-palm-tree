@@ -1,7 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { format, addDays, subDays, parseISO } from 'date-fns'
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -13,17 +12,15 @@ import {
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 import { useLanguage } from '@/components/providers/LanguageProvider'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { MealFormDialog } from '@/components/meals/MealForm'
 import { WorkoutFormDialog } from '@/components/workouts/WorkoutForm'
 import { WeightFormDialog } from '@/components/weight/WeightForm'
-import { HabitForm } from '@/components/habits/HabitForm'
+import { DiaryTimeline } from './DiaryTimeline'
 
 interface DiaryViewProps {
   userId: string
   date: string
-  children: React.ReactNode
   summary: {
     caloriesConsumed: number
     caloriesBurned: number
@@ -31,9 +28,23 @@ interface DiaryViewProps {
     carbs: number
     fat: number
   }
+  meals: any[]
+  workouts: any[]
+  weights: any[]
+  habitLogs: any[]
+  habits: any[]
 }
 
-export function DiaryView({ userId, date, children, summary }: DiaryViewProps) {
+export function DiaryView({ 
+  userId, 
+  date, 
+  summary,
+  meals,
+  workouts,
+  weights,
+  habitLogs,
+  habits
+}: DiaryViewProps) {
   const router = useRouter()
   const { t } = useLanguage()
   const currentDate = parseISO(date)
@@ -134,16 +145,10 @@ export function DiaryView({ userId, date, children, summary }: DiaryViewProps) {
         </Card>
       </div>
 
-      {/* Main Content Tabs */}
-      <Tabs defaultValue="all" className="space-y-4">
+      {/* Quick Actions & Timeline */}
+      <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <TabsList>
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="meals">Meals</TabsTrigger>
-            <TabsTrigger value="workouts">Workouts</TabsTrigger>
-            <TabsTrigger value="habits">Habits</TabsTrigger>
-          </TabsList>
-          
+          <h2 className="text-lg font-semibold tracking-tight">Timeline</h2>
           <div className="flex gap-2">
             <MealFormDialog userId={userId}>
               <Button size="sm" variant="outline">
@@ -163,19 +168,18 @@ export function DiaryView({ userId, date, children, summary }: DiaryViewProps) {
           </div>
         </div>
 
-        <TabsContent value="all" className="space-y-4">
-          {children}
-        </TabsContent>
-        
-        <TabsContent value="meals" className="space-y-4">
-          {/* Filtered view logic would go here, or just reuse the children which are already sections */}
-          <div className="text-sm text-muted-foreground">
-            Switch to &apos;All&apos; to see the full timeline for now.
-          </div>
-        </TabsContent>
-        
-        {/* Other tabs placeholders */}
-      </Tabs>
+        <Card className="border-border/50 bg-card/40 backdrop-blur-xl">
+          <CardContent className="p-6">
+            <DiaryTimeline 
+              meals={meals} 
+              workouts={workouts} 
+              weights={weights} 
+              habitLogs={habitLogs} 
+              habits={habits} 
+            />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }
