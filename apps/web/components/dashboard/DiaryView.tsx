@@ -171,6 +171,7 @@ export function DiaryView({
         <Card className="border-border/50 bg-card/40 backdrop-blur-xl">
           <CardContent className="p-6">
             <DiaryTimeline 
+              userId={userId}
               meals={meals} 
               workouts={workouts} 
               weights={weights} 
