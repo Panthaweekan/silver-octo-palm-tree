@@ -6,6 +6,8 @@
 
 FitJourney is a comprehensive health and fitness tracking application that helps users monitor their exercise, nutrition, weight progress, and daily habits with AI-powered insights.
 
+**🎯 Lightweight & Fast Development Stack** - Built with Supabase + Next.js for rapid development and easy deployment.
+
 ### Core Principles
 - **Track** → Easy logging of workouts, meals, and metrics
 - **Analyze** → Long-term progress visualization and trends
@@ -72,34 +74,69 @@ fitjourney-monorepo/
 
 ## 🚀 Quick Start
 
+**See [QUICKSTART.md](./QUICKSTART.md) for detailed setup instructions.**
+
+### Option 1: Supabase + Next.js (Recommended for MVP)
+
 ```bash
+# 1. Create Supabase project at https://supabase.com
+# 2. Run database schema (supabase/schema.sql)
+# 3. Copy .env.example to .env.local
+# 4. Add your Supabase credentials
+
 # Install dependencies
+cd apps/web
+npm install
+
+# Start development
+npm run dev
+
+# Open http://localhost:3000
+```
+
+### Option 2: Full Monorepo Setup
+
+```bash
+# Install all dependencies
 npm install
 
 # Run development servers
 npm run dev
-
-# Build all apps
-npm run build
-
-# Run tests
-npm run test
 ```
 
 ## 📚 Documentation
 
-- [System Design](./docs/SYSTEM_DESIGN.md) - Architecture overview
+### Quick Start & Setup
+- [Quick Start Guide](./QUICKSTART.md) - Get started in minutes
+- [Supabase Setup](./docs/SUPABASE_SETUP.md) - **NEW!** Step-by-step Supabase guide
+
+### Architecture & Design
+- [System Design](./docs/SYSTEM_DESIGN.md) - Original architecture (reference)
 - [Database Schema](./docs/DB_SCHEMA.md) - Complete database design
-- [API Design](./docs/API_DESIGN.md) - RESTful API specifications
-- [Roadmap](./docs/ROADMAP.md) - Development phases and milestones
+- [API Design](./docs/API_DESIGN.md) - API specifications
+- [Roadmap](./docs/ROADMAP.md) - Development phases
 
-## 🛠️ Tech Stack
+### Current Implementation
+We're using a **simplified Supabase architecture** for faster MVP development. The original microservices architecture in docs/ is kept for reference and future scaling.
 
-- **Frontend**: Next.js 14, React Native, TailwindCSS, Shadcn/ui
-- **Backend**: FastAPI (Python), Node.js
-- **Database**: PostgreSQL, Redis
-- **AI/ML**: OpenAI GPT-4, TensorFlow Lite
-- **Infrastructure**: Docker, Kubernetes, AWS/GCP
+## 🛠️ Tech Stack (Simplified for Fast Development)
+
+- **Frontend**: Next.js 14 (App Router), TailwindCSS, Shadcn/ui
+- **Backend**: Supabase (All-in-One Platform)
+  - Authentication (JWT + OAuth)
+  - PostgreSQL Database
+  - Auto-generated REST API
+  - File Storage
+  - Real-time Subscriptions
+- **AI/ML**: OpenAI API (for future AI features)
+- **Deployment**: Vercel (Frontend), Supabase (Backend)
+
+**Why This Stack?**
+- ✅ No backend code needed (Supabase auto-generates APIs)
+- ✅ Built-in authentication & security
+- ✅ Free tier covers MVP development
+- ✅ Can scale to production easily
+- ✅ Deploy in minutes
 
 ## 📄 License
 
