@@ -24,17 +24,19 @@ export default async function DiaryPage({ searchParams }: DiaryPageProps) {
   const date = searchParams.date || new Date().toISOString().split('T')[0]
 
   // Fetch summary data for the top cards
-  const { data: meals } = await supabase
-    .from('meals')
-    .select('calories, protein_g, carbs_g, fat_g')
-    .eq('user_id', user.id)
-    .eq('date', date)
-
-  const { data: workouts } = await supabase
-    .from('workouts')
-    .select('calories_burned')
-    .eq('user_id', user.id)
-    .eq('date', date)
+  const [
+    { data: meals },
+    { data: workouts },
+    { data: weights },
+    { data: habits },
+    { data: habitLogs }
+  ] = await Promise.all([
+    supabase.from('meals').select('*').eq('user_id', user.id).eq('date', date).order('created_at', { ascending: true }),
+    supabase.from('workouts').select('*').eq('user_id', user.id).eq('date', date).order('created_at', { ascending: true }),
+    supabase.from('weights').select('*').eq('user_id', user.id).eq('date', date).order('created_at', { ascending: true }),
+    supabase.from('habits').select('*').eq('user_id', user.id),
+    supabase.from('habit_logs').select('*').eq('user_id', user.id).eq('date', date).order('created_at', { ascending: true })
+  ])
 
   const summary = {
     caloriesConsumed: meals?.reduce((sum, m) => sum + (m.calories || 0), 0) || 0,
@@ -51,18 +53,16 @@ export default async function DiaryPage({ searchParams }: DiaryPageProps) {
         description="Track your meals, workouts, and habits." 
       />
       
-      <DiaryView userId={user.id} date={date} summary={summary}>
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="space-y-6">
-            <h3 className="text-lg font-semibold">Meals</h3>
-            <RecentMeals userId={user.id} date={date} />
-          </div>
-          <div className="space-y-6">
-            <h3 className="text-lg font-semibold">Workouts</h3>
-            <RecentWorkouts userId={user.id} date={date} />
-          </div>
-        </div>
-      </DiaryView>
+      <DiaryView 
+        userId={user.id} 
+        date={date} 
+        summary={summary}
+        meals={meals || []}
+        workouts={workouts || []}
+        weights={weights || []}
+        habitLogs={habitLogs || []}
+        habits={habits || []}
+      />
     </div>
   )
 }
