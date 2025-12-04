@@ -174,7 +174,7 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="date" className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-gray-500" />
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
                   Date
                 </Label>
                 <Input
@@ -189,7 +189,7 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
 
               <div className="space-y-2">
                 <Label htmlFor="weight_kg" className="flex items-center gap-2">
-                  <Scale className="h-4 w-4 text-gray-500" />
+                  <Scale className="h-4 w-4 text-muted-foreground" />
                   Weight (kg)
                 </Label>
                 <Input
@@ -210,7 +210,7 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
             {/* Body Fat % */}
             <div className="space-y-2">
               <Label htmlFor="body_fat_percentage" className="flex items-center gap-2">
-                <Activity className="h-4 w-4 text-gray-500" />
+                <Activity className="h-4 w-4 text-muted-foreground" />
                 Body Fat %
               </Label>
               <Input
@@ -227,12 +227,12 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
 
             {/* Measurements Section */}
             <div className="space-y-3">
-              <Label className="text-sm font-medium text-gray-500 flex items-center gap-2">
+              <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Ruler className="h-4 w-4" /> Measurements (cm)
               </Label>
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="waist_cm" className="text-xs text-gray-600">Waist</Label>
+                  <Label htmlFor="waist_cm" className="text-xs text-muted-foreground">Waist</Label>
                   <Input
                     id="waist_cm"
                     name="waist_cm"
@@ -244,7 +244,7 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="hips_cm" className="text-xs text-gray-600">Hips</Label>
+                  <Label htmlFor="hips_cm" className="text-xs text-muted-foreground">Hips</Label>
                   <Input
                     id="hips_cm"
                     name="hips_cm"
@@ -256,7 +256,7 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="chest_cm" className="text-xs text-gray-600">Chest</Label>
+                  <Label htmlFor="chest_cm" className="text-xs text-muted-foreground">Chest</Label>
                   <Input
                     id="chest_cm"
                     name="chest_cm"
@@ -273,7 +273,7 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
             {/* Notes */}
             <div className="space-y-2">
               <Label htmlFor="notes" className="flex items-center gap-2">
-                <FileText className="h-4 w-4 text-gray-500" />
+                <FileText className="h-4 w-4 text-muted-foreground" />
                 Notes
               </Label>
               <Textarea

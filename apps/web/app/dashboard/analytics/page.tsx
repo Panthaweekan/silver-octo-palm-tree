@@ -35,13 +35,15 @@ export default async function AnalyticsPage() {
     { data: workouts },
     { data: weights },
     { data: habits },
-    { data: habitLogs }
+    { data: habitLogs },
+    { data: profile }
   ] = await Promise.all([
     supabase.from('meals').select('*').eq('user_id', user.id).gte('date', last30Days[0]),
     supabase.from('workouts').select('*').eq('user_id', user.id).gte('date', last30Days[0]),
     supabase.from('weights').select('*').eq('user_id', user.id).gte('date', last30Days[0]).order('date', { ascending: true }),
     supabase.from('habits').select('*').eq('user_id', user.id),
-    supabase.from('habit_logs').select('*').eq('user_id', user.id).gte('date', last7Days[0])
+    supabase.from('habit_logs').select('*').eq('user_id', user.id).gte('date', last7Days[0]),
+    supabase.from('profiles').select('*').eq('id', user.id).single()
   ])
 
   // Process Weekly Trends Data
@@ -56,15 +58,47 @@ export default async function AnalyticsPage() {
     }
   })
 
+  // Helper to calculate BMR
+  const calculateBMR = (weight: number, height: number, age: number, gender: string) => {
+    if (!weight || !height || !age) return 0
+    // Mifflin-St Jeor Equation
+    const s = gender === 'female' ? -161 : 5
+    return (10 * weight) + (6.25 * height) - (5 * age) + s
+  }
+
+  // Helper to get Activity Multiplier
+  const getActivityMultiplier = (level: string) => {
+    const levels: Record<string, number> = {
+      'sedentary': 1.2,
+      'light': 1.375,
+      'moderate': 1.55,
+      'active': 1.725,
+      'very_active': 1.9
+    }
+    return levels[level] || 1.2
+  }
+
   // Process Calorie vs Weight Data
   const calorieWeightData = last30Days.map(date => {
     const dayMeals = meals?.filter(m => m.date === date) || []
     const dayWeight = weights?.find(w => w.date === date)
     
+    // Use current weight if day weight is missing, or fallback to profile weight
+    const weight = dayWeight?.weight_kg || profile?.weight_kg || 70
+    const height = profile?.height_cm || 170
+    const age = profile?.date_of_birth ? new Date().getFullYear() - new Date(profile.date_of_birth).getFullYear() : 30
+    const gender = profile?.gender || 'male'
+    const activityLevel = profile?.activity_level || 'sedentary'
+
+    const bmr = calculateBMR(weight, height, age, gender)
+    const tdee = bmr * getActivityMultiplier(activityLevel)
+
     return {
       date: format(parseISO(date), 'MMM d'),
       calories: dayMeals.reduce((sum, m) => sum + (m.calories || 0), 0),
-      weight: dayWeight ? dayWeight.weight_kg : null
+      weight: dayWeight ? dayWeight.weight_kg : null,
+      bmr: Math.round(bmr),
+      tdee: Math.round(tdee)
     }
   })
 

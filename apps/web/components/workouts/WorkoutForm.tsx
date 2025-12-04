@@ -169,7 +169,7 @@ export function WorkoutFormDialog({
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="date" className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-gray-500" />
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
                   Date
                 </Label>
                 <Input
@@ -184,7 +184,7 @@ export function WorkoutFormDialog({
 
               <div className="space-y-2">
                 <Label htmlFor="type" className="flex items-center gap-2">
-                  <Activity className="h-4 w-4 text-gray-500" />
+                  <Activity className="h-4 w-4 text-muted-foreground" />
                   Type
                 </Label>
                 <Select
@@ -211,7 +211,7 @@ export function WorkoutFormDialog({
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="duration_minutes" className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-gray-500" />
+                  <Clock className="h-4 w-4 text-muted-foreground" />
                   Duration (min)
                 </Label>
                 <Input
@@ -229,7 +229,7 @@ export function WorkoutFormDialog({
               {showDistance ? (
                 <div className="space-y-2">
                   <Label htmlFor="distance_km" className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-gray-500" />
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
                     Distance (km)
                   </Label>
                   <Input
@@ -283,7 +283,7 @@ export function WorkoutFormDialog({
             {/* Notes */}
             <div className="space-y-2">
               <Label htmlFor="notes" className="flex items-center gap-2">
-                <FileText className="h-4 w-4 text-gray-500" />
+                <FileText className="h-4 w-4 text-muted-foreground" />
                 Notes
               </Label>
               <Textarea

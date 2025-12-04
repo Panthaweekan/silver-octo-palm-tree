@@ -12,6 +12,7 @@ import {
   TrendingUp,
   Settings,
   LogOut,
+  BookOpen,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -154,10 +155,7 @@ function NavContent({ pathname, handleLogout, onItemClick }: { pathname: string,
   
   const navigation = [
     { name: t('common.dashboard'), href: '/dashboard', icon: Home },
-    { name: t('common.workouts'), href: '/dashboard/workouts', icon: Dumbbell },
-    { name: t('common.meals'), href: '/dashboard/meals', icon: Apple },
-    { name: t('common.weight'), href: '/dashboard/weight', icon: Scale },
-    { name: t('common.habits'), href: '/dashboard/habits', icon: Target },
+    { name: 'Diary', href: '/dashboard/diary', icon: BookOpen },
     { name: t('common.analytics'), href: '/dashboard/analytics', icon: TrendingUp },
     { name: t('common.settings'), href: '/dashboard/settings', icon: Settings },
   ]
