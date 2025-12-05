@@ -8,6 +8,7 @@ import { Slider } from '@/components/ui/slider'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
+import { useLanguage } from '@/components/providers/LanguageProvider'
 
 interface SleepLog {
   id: string
@@ -28,6 +29,7 @@ export function SleepTracker({ userId, date, initialLog }: SleepTrackerProps) {
   const [isSaving, setIsSaving] = useState(false)
   const supabase = createClient()
   const { toast } = useToast()
+  const { t } = useLanguage()
 
   useEffect(() => {
     if (initialLog) {
@@ -56,7 +58,7 @@ export function SleepTracker({ userId, date, initialLog }: SleepTrackerProps) {
           .eq('id', log.id)
 
         if (error) throw error
-        toast.success('Sleep log updated')
+        toast.success(t('sleep.updated'))
       } else {
         // Insert
         const { data, error } = await (supabase
@@ -72,11 +74,11 @@ export function SleepTracker({ userId, date, initialLog }: SleepTrackerProps) {
 
         if (error) throw error
         setLog(data)
-        toast.success('Sleep logged')
+        toast.success(t('sleep.success'))
       }
     } catch (error) {
       console.error('Error saving sleep log:', error)
-      toast.error('Failed to save sleep log')
+      toast.error(t('sleep.error'))
     } finally {
       setIsSaving(false)
     }
@@ -89,10 +91,10 @@ export function SleepTracker({ userId, date, initialLog }: SleepTrackerProps) {
   }
 
   const qualities: { value: SleepLog['quality']; label: string; icon: string }[] = [
-    { value: 'poor', label: 'Poor', icon: '😫' },
-    { value: 'fair', label: 'Fair', icon: '😐' },
-    { value: 'good', label: 'Good', icon: '🙂' },
-    { value: 'excellent', label: 'Excellent', icon: '🤩' },
+    { value: 'poor', label: t('sleep.qualities.poor'), icon: '😫' },
+    { value: 'fair', label: t('sleep.qualities.fair'), icon: '😐' },
+    { value: 'good', label: t('sleep.qualities.good'), icon: '🙂' },
+    { value: 'excellent', label: t('sleep.qualities.excellent'), icon: '🤩' },
   ]
 
   return (
@@ -102,11 +104,11 @@ export function SleepTracker({ userId, date, initialLog }: SleepTrackerProps) {
           <div className="p-2 bg-indigo-100 rounded-full text-indigo-600">
             <Moon className="h-4 w-4" />
           </div>
-          <h3 className="font-semibold text-lg">Sleep Tracker</h3>
+          <h3 className="font-semibold text-lg">{t('sleep.title')}</h3>
         </div>
         {log && (
           <span className="text-sm font-medium text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md">
-            Logged
+            {t('sleep.logged')}
           </span>
         )}
       </div>
@@ -114,7 +116,7 @@ export function SleepTracker({ userId, date, initialLog }: SleepTrackerProps) {
       <div className="space-y-4">
         <div className="space-y-2">
           <div className="flex justify-between">
-            <Label>Duration</Label>
+            <Label>{t('sleep.duration')}</Label>
             <span className="font-medium text-indigo-600">{formatDuration(duration)}</span>
           </div>
           <Slider
@@ -128,7 +130,7 @@ export function SleepTracker({ userId, date, initialLog }: SleepTrackerProps) {
         </div>
 
         <div className="space-y-2">
-          <Label>Quality</Label>
+          <Label>{t('sleep.quality')}</Label>
           <div className="grid grid-cols-4 gap-2">
             {qualities.map((q) => (
               <button
@@ -153,7 +155,7 @@ export function SleepTracker({ userId, date, initialLog }: SleepTrackerProps) {
           disabled={isSaving} 
           className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
         >
-          {isSaving ? 'Saving...' : log ? 'Update Sleep Log' : 'Log Sleep'}
+          {isSaving ? t('sleep.saving') : log ? t('sleep.update') : t('sleep.save')}
         </Button>
       </div>
     </div>

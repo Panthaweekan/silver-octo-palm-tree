@@ -2,6 +2,7 @@
 
 import { WorkoutCard } from './WorkoutCard'
 import { WorkoutType } from '@/lib/constants'
+import { useLanguage } from '@/components/providers/LanguageProvider'
 
 interface Workout {
   id: string
@@ -20,6 +21,7 @@ interface WorkoutListProps {
 }
 
 export function WorkoutList({ workouts, userId, userWeight }: WorkoutListProps) {
+  const { t, language } = useLanguage()
   // Group workouts by date
   const groupedWorkouts = workouts.reduce((groups, workout) => {
     const date = workout.date
@@ -42,11 +44,11 @@ export function WorkoutList({ workouts, userId, userWeight }: WorkoutListProps) 
     yesterday.setDate(yesterday.getDate() - 1)
 
     if (dateString === today.toISOString().split('T')[0]) {
-      return 'Today'
+      return t('common.today')
     } else if (dateString === yesterday.toISOString().split('T')[0]) {
-      return 'Yesterday'
+      return t('common.yesterday')
     } else {
-      return date.toLocaleDateString('en-US', { 
+      return date.toLocaleDateString(language === 'th' ? 'th-TH' : 'en-US', { 
         weekday: 'long', 
         year: 'numeric', 
         month: 'long', 
@@ -68,7 +70,7 @@ export function WorkoutList({ workouts, userId, userWeight }: WorkoutListProps) 
                 {formatDateHeading(date)}
               </h2>
               <span className="text-sm font-medium text-muted-foreground">
-                Total: <span className="text-foreground font-bold">{totalDuration} min</span>
+                {t('common.total')}: <span className="text-foreground font-bold">{totalDuration} {t('common.minutes')}</span>
               </span>
             </div>
             <div className="grid gap-4">
