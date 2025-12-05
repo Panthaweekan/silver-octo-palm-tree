@@ -78,13 +78,13 @@ export function FoodSearch({ onSelect }: FoodSearchProps) {
               className="flex items-center gap-3 p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors max-w-full"
             >
               <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-sm sm:text-base break-words leading-tight">{product.product_name}</h4>
-                <p className="text-xs sm:text-sm text-muted-foreground truncate mt-1">
+                <h4 className="font-medium text-sm sm:text-base break-words leading-tight line-clamp-2">{product.product_name}</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1 line-clamp-1 break-all">
                   {product.brands ? `${product.brands} • ` : ''}
                   {Math.round(product.nutriments['energy-kcal_100g'] || 0)} kcal / 100g
                 </p>
                 {product.ingredients_text && (
-                  <p className="text-xs text-muted-foreground/70 truncate mt-0.5 max-w-[90%]">
+                  <p className="text-xs text-muted-foreground/70 mt-0.5 line-clamp-2 break-words">
                     {product.ingredients_text}
                   </p>
                 )}

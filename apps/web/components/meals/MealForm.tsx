@@ -177,7 +177,7 @@ export function MealFormDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="w-auto min-w-[90vw] max-w-[95vw] sm:min-w-[500px] sm:max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+      <DialogContent className="w-full max-w-[95vw] sm:max-w-lg md:max-w-xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
           <DialogTitle>{isEditing ? 'Edit Meal' : 'Log Meal'}</DialogTitle>
           <DialogDescription>

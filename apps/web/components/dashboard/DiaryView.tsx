@@ -18,6 +18,7 @@ import { WorkoutFormDialog } from '@/components/workouts/WorkoutForm'
 import { WeightFormDialog } from '@/components/weight/WeightForm'
 import { DiaryTimeline } from './DiaryTimeline'
 import { HabitList } from '@/components/habits/HabitList'
+import { HabitForm } from '@/components/habits/HabitForm'
 import { TodoList } from '@/components/diary/TodoList'
 import { SleepTracker } from '@/components/diary/SleepTracker'
 
@@ -193,7 +194,10 @@ export function DiaryView({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Habits Column */}
         <div className="lg:col-span-3">
-          <h2 className="text-lg font-semibold tracking-tight mb-4">Habits</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold tracking-tight">Habits</h2>
+            <HabitForm userId={userId} />
+          </div>
           <HabitList userId={userId} habits={habits} logs={habitLogs} />
         </div>
 
