@@ -45,8 +45,8 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
     setNewTodo('')
 
     try {
-      const { data, error } = await supabase
-        .from('todos')
+      const { data, error } = await (supabase
+        .from('todos') as any)
         .insert({
           user_id: userId,
           date: date,
@@ -72,8 +72,8 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
     setTodos(prev => prev.map(t => t.id === id ? { ...t, completed } : t))
 
     try {
-      const { error } = await supabase
-        .from('todos')
+      const { error } = await (supabase
+        .from('todos') as any)
         .update({ completed })
         .eq('id', id)
 
@@ -121,8 +121,8 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
         // Check if already exists to avoid duplicates
         if (todos.some(t => t.text === text)) continue
 
-        const { data, error } = await supabase
-          .from('todos')
+        const { data, error } = await (supabase
+          .from('todos') as any)
           .insert({
             user_id: userId,
             date: date,

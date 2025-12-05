@@ -1,46 +1,70 @@
-import { createServerClient } from '@/lib/supabase/server'
+'use client'
 
-export const dynamic = 'force-dynamic'
+import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { Button } from '@/components/ui/button'
-import { Plus, Dumbbell } from 'lucide-react'
+import { Plus, Dumbbell, Loader2 } from 'lucide-react'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { WorkoutStats } from '@/components/workouts/WorkoutStats'
 import { WorkoutList } from '@/components/workouts/WorkoutList'
 import { WorkoutFormDialog } from '@/components/workouts/WorkoutForm'
+import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
+import type { Database } from '@/types/supabase'
 
-export default async function WorkoutsPage() {
-  const supabase = createServerClient()
+type Workout = Database['public']['Tables']['workouts']['Row']
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+export default function WorkoutsPage() {
+  const supabase = createClient()
+  const router = useRouter()
 
-  if (!user) return null
+  const { data: user, isLoading: userLoading } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      return user
+    }
+  })
 
-  // Fetch workouts for the last 30 days
-  const thirtyDaysAgo = new Date()
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-  const thirtyDaysAgoStr = thirtyDaysAgo.toISOString().split('T')[0]
+  useEffect(() => {
+    if (!userLoading && !user) {
+      router.push('/auth/login')
+    }
+  }, [user, userLoading, router])
 
-  const { data: workouts } = await supabase
-    .from('workouts')
-    .select('*')
-    .eq('user_id', user.id)
-    .gte('date', thirtyDaysAgoStr)
-    .order('date', { ascending: false })
+  const { data: workoutsData, isLoading: dataLoading } = useQuery({
+    queryKey: ['workouts', user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const thirtyDaysAgo = new Date()
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+      const thirtyDaysAgoStr = thirtyDaysAgo.toISOString().split('T')[0]
 
-  // Fetch user's current weight for calorie calculations
-  const { data: latestWeight } = await supabase
-    .from('weights')
-    .select('weight_kg')
-    .eq('user_id', user.id)
-    .order('date', { ascending: false })
-    .limit(1)
-    .single()
+      const [
+        { data: workouts },
+        { data: latestWeight }
+      ] = await Promise.all([
+        supabase.from('workouts').select('*').eq('user_id', user!.id).gte('date', thirtyDaysAgoStr).order('date', { ascending: false }),
+        supabase.from('weights').select('weight_kg').eq('user_id', user!.id).order('date', { ascending: false }).limit(1).single()
+      ])
 
-  const userWeight = latestWeight?.weight_kg || 70 // Default to 70kg if no weight logged
+      return {
+        workouts: (workouts as unknown as Workout[]) || [],
+        userWeight: (latestWeight as any)?.weight_kg || 70
+      }
+    }
+  })
 
+  if (userLoading || !user || dataLoading || !workoutsData) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  const { workouts, userWeight } = workoutsData
   const hasData = workouts && workouts.length > 0
 
   return (
@@ -69,10 +93,10 @@ export default async function WorkoutsPage() {
       ) : (
         <>
           {/* Stats Cards */}
-          <WorkoutStats workouts={workouts || []} />
+          <WorkoutStats workouts={workouts as any} />
 
           {/* Workout List (grouped by date) */}
-          <WorkoutList workouts={workouts || []} userId={user.id} userWeight={userWeight} />
+          <WorkoutList workouts={workouts as any} userId={user.id} userWeight={userWeight} />
         </>
       )}
     </div>

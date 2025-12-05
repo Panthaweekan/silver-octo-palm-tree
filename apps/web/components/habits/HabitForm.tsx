@@ -53,7 +53,7 @@ export function HabitForm({ userId }: { userId: string }) {
 
   async function onSubmit(values: FormValues) {
     try {
-      const { error } = await supabase.from('habits').insert({
+      const { error } = await (supabase.from('habits') as any).insert({
         user_id: userId,
         name: values.name,
         description: values.description,

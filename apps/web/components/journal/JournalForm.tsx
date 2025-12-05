@@ -78,27 +78,30 @@ export function JournalForm({ userId, existingEntry }: JournalFormProps) {
     setLoading(true)
     try {
       const today = new Date().toISOString().split('T')[0]
+      const data = {
+        content: values.content,
+        mood: values.mood,
+        energy_level: values.energy_level,
+      }
 
       if (existingEntry) {
-        const { error } = await supabase
-          .from('daily_journals')
-          .update({
+        const { error } = await (supabase
+          .from('daily_journals') as any)
+          .update(data)
+          .eq('id', existingEntry.id)
+
+        if (error) throw error
+        toast.success('Journal updated successfully')
+      } else {
+        const { error } = await (supabase
+          .from('daily_journals') as any)
+          .insert({
+            user_id: userId,
+            date: today,
             content: values.content,
             mood: values.mood,
             energy_level: values.energy_level,
           })
-          .eq('id', existingEntry.id)
-
-        if (error) throw error
-        toast.success('Journal updated successfully!')
-      } else {
-        const { error } = await supabase.from('daily_journals').insert({
-          user_id: userId,
-          date: today,
-          content: values.content,
-          mood: values.mood,
-          energy_level: values.energy_level,
-        })
 
         if (error) throw error
         toast.success('Journal entry created!')

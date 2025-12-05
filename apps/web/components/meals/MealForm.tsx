@@ -130,9 +130,9 @@ export function MealFormDialog({
 
     try {
       if (isEditing) {
-        const { error } = await supabase
-          .from('meals')
-          .update(data)
+        const { error } = await (supabase
+          .from('meals') as any)
+          .insert(data)
           .eq('id', initialData.id)
 
         if (error) {
@@ -143,7 +143,7 @@ export function MealFormDialog({
 
         toast.success('Meal updated successfully!')
       } else {
-        const { error } = await supabase.from('meals').insert(data)
+        const { error } = await (supabase.from('meals') as any).insert(data)
 
         if (error) {
           toast.error(error.message)

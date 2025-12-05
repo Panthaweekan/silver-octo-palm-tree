@@ -110,8 +110,8 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
     try {
       if (isEditing) {
         // Update existing weight entry
-        const { error } = await supabase
-          .from('weights')
+        const { error } = await (supabase
+          .from('weights') as any)
           .update(data)
           .eq('id', initialData.id)
 
@@ -128,7 +128,7 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
         toast.success('Weight updated successfully!')
       } else {
         // Insert new weight entry
-        const { error } = await supabase.from('weights').insert(data)
+        const { error } = await (supabase.from('weights') as any).insert(data)
 
         if (error) {
           if (error.code === '23505') {
