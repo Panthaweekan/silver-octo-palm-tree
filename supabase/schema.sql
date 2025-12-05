@@ -473,6 +473,68 @@ VALUES
 -- workout-images: Users can upload and read their own images
 
 -- =====================================================
+-- 8. TODOS TABLE
+-- Daily tasks and checklists
+-- =====================================================
+
+CREATE TABLE IF NOT EXISTS public.todos (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  date DATE NOT NULL DEFAULT CURRENT_DATE,
+  text TEXT NOT NULL,
+  completed BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Indexes
+CREATE INDEX IF NOT EXISTS todos_user_id_idx ON public.todos(user_id);
+CREATE INDEX IF NOT EXISTS todos_date_idx ON public.todos(date DESC);
+CREATE INDEX IF NOT EXISTS todos_user_date_idx ON public.todos(user_id, date DESC);
+
+-- RLS
+ALTER TABLE public.todos ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view own todos" ON public.todos FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert own todos" ON public.todos FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can update own todos" ON public.todos FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Users can delete own todos" ON public.todos FOR DELETE USING (auth.uid() = user_id);
+
+CREATE TRIGGER update_todos_updated_at BEFORE UPDATE ON public.todos FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- =====================================================
+-- 9. SLEEP_LOGS TABLE
+-- Track nightly sleep
+-- =====================================================
+
+CREATE TABLE IF NOT EXISTS public.sleep_logs (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  date DATE NOT NULL DEFAULT CURRENT_DATE,
+  duration_minutes INTEGER NOT NULL CHECK (duration_minutes >= 0),
+  quality TEXT CHECK (quality IN ('poor', 'fair', 'good', 'excellent')),
+  notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+
+  UNIQUE(user_id, date)
+);
+
+-- Indexes
+CREATE INDEX IF NOT EXISTS sleep_logs_user_id_idx ON public.sleep_logs(user_id);
+CREATE INDEX IF NOT EXISTS sleep_logs_date_idx ON public.sleep_logs(date DESC);
+
+-- RLS
+ALTER TABLE public.sleep_logs ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view own sleep logs" ON public.sleep_logs FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert own sleep logs" ON public.sleep_logs FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can update own sleep logs" ON public.sleep_logs FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Users can delete own sleep logs" ON public.sleep_logs FOR DELETE USING (auth.uid() = user_id);
+
+CREATE TRIGGER update_sleep_logs_updated_at BEFORE UPDATE ON public.sleep_logs FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- =====================================================
 -- COMPLETION
 -- =====================================================
 

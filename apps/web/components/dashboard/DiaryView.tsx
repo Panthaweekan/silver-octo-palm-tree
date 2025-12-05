@@ -17,6 +17,9 @@ import { MealFormDialog } from '@/components/meals/MealForm'
 import { WorkoutFormDialog } from '@/components/workouts/WorkoutForm'
 import { WeightFormDialog } from '@/components/weight/WeightForm'
 import { DiaryTimeline } from './DiaryTimeline'
+import { HabitList } from '@/components/habits/HabitList'
+import { TodoList } from '@/components/diary/TodoList'
+import { SleepTracker } from '@/components/diary/SleepTracker'
 
 interface DiaryViewProps {
   userId: string
@@ -33,6 +36,8 @@ interface DiaryViewProps {
   weights: any[]
   habitLogs: any[]
   habits: any[]
+  todos: any[]
+  sleepLog: any
 }
 
 export function DiaryView({ 
@@ -43,7 +48,9 @@ export function DiaryView({
   workouts,
   weights,
   habitLogs,
-  habits
+  habits,
+  todos,
+  sleepLog
 }: DiaryViewProps) {
   const router = useRouter()
   const { t } = useLanguage()
@@ -178,6 +185,29 @@ export function DiaryView({
               habitLogs={habitLogs} 
               habits={habits} 
             />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Habits, Todos, Sleep Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Habits Column */}
+        <div className="lg:col-span-3">
+          <h2 className="text-lg font-semibold tracking-tight mb-4">Habits</h2>
+          <HabitList userId={userId} habits={habits} logs={habitLogs} />
+        </div>
+
+        {/* Todo List */}
+        <Card className="border-border/50 bg-card/40 backdrop-blur-xl h-fit">
+          <CardContent className="p-6">
+            <TodoList userId={userId} date={date} initialTodos={todos} />
+          </CardContent>
+        </Card>
+
+        {/* Sleep Tracker */}
+        <Card className="border-border/50 bg-card/40 backdrop-blur-xl h-fit">
+          <CardContent className="p-6">
+            <SleepTracker userId={userId} date={date} initialLog={sleepLog} />
           </CardContent>
         </Card>
       </div>

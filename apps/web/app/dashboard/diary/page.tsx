@@ -29,13 +29,17 @@ export default async function DiaryPage({ searchParams }: DiaryPageProps) {
     { data: workouts },
     { data: weights },
     { data: habits },
-    { data: habitLogs }
+    { data: habitLogs },
+    { data: todos },
+    { data: sleepLogs }
   ] = await Promise.all([
     supabase.from('meals').select('*').eq('user_id', user.id).eq('date', date).order('created_at', { ascending: true }),
     supabase.from('workouts').select('*').eq('user_id', user.id).eq('date', date).order('created_at', { ascending: true }),
     supabase.from('weights').select('*').eq('user_id', user.id).eq('date', date).order('created_at', { ascending: true }),
     supabase.from('habits').select('*').eq('user_id', user.id),
-    supabase.from('habit_logs').select('*').eq('user_id', user.id).eq('date', date).order('created_at', { ascending: true })
+    supabase.from('habit_logs').select('*').eq('user_id', user.id).eq('date', date).order('created_at', { ascending: true }),
+    supabase.from('todos').select('*').eq('user_id', user.id).eq('date', date).order('created_at', { ascending: true }),
+    supabase.from('sleep_logs').select('*').eq('user_id', user.id).eq('date', date).single()
   ])
 
   const summary = {
@@ -62,6 +66,8 @@ export default async function DiaryPage({ searchParams }: DiaryPageProps) {
         weights={weights || []}
         habitLogs={habitLogs || []}
         habits={habits || []}
+        todos={todos || []}
+        sleepLog={sleepLogs || null}
       />
     </div>
   )
