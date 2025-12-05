@@ -12,6 +12,140 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      exercises: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          muscle_group: string
+          equipment: string | null
+          video_url: string | null
+          is_custom: boolean | null
+          created_by: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          muscle_group: string
+          equipment?: string | null
+          video_url?: string | null
+          is_custom?: boolean | null
+          created_by?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          muscle_group?: string
+          equipment?: string | null
+          video_url?: string | null
+          is_custom?: boolean | null
+          created_by?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exercises_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      workout_templates: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          description: string | null
+          type: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          description?: string | null
+          type?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          description?: string | null
+          type?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      workout_exercises: {
+        Row: {
+          id: string
+          workout_id: string
+          exercise_id: string
+          order_index: number
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          workout_id: string
+          exercise_id: string
+          order_index: number
+          notes?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          workout_id?: string
+          exercise_id?: string
+          order_index?: number
+          notes?: string | null
+          created_at?: string
+        }
+      }
+      workout_sets: {
+        Row: {
+          id: string
+          workout_exercise_id: string
+          set_number: number
+          reps: number | null
+          weight_kg: number | null
+          distance_km: number | null
+          duration_seconds: number | null
+          rpe: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          workout_exercise_id: string
+          set_number: number
+          reps?: number | null
+          weight_kg?: number | null
+          distance_km?: number | null
+          duration_seconds?: number | null
+          rpe?: number | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          workout_exercise_id?: string
+          set_number?: number
+          reps?: number | null
+          weight_kg?: number | null
+          distance_km?: number | null
+          duration_seconds?: number | null
+          rpe?: number | null
+          created_at?: string
+        }
+      }
       profiles: {
         Row: {
           id: string
@@ -58,6 +192,7 @@ export interface Database {
           id: string
           user_id: string
           date: string
+          name: string | null
           type: string
           duration_minutes: number
           distance_km: number | null
@@ -70,6 +205,7 @@ export interface Database {
           id?: string
           user_id: string
           date?: string
+          name?: string | null
           type: string
           duration_minutes: number
           distance_km?: number | null
@@ -82,6 +218,7 @@ export interface Database {
           id?: string
           user_id?: string
           date?: string
+           name?: string | null
           type?: string
           duration_minutes?: number
           distance_km?: number | null
@@ -142,6 +279,41 @@ export interface Database {
           notes?: string | null
           created_at?: string
           updated_at?: string
+        }
+      }
+      food_database: {
+        Row: {
+          id: string
+          name: string
+          category: string | null
+          serving_size: string | null
+          calories: number
+          protein_g: number | null
+          carbs_g: number | null
+          fat_g: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          category?: string | null
+          serving_size?: string | null
+          calories: number
+          protein_g?: number | null
+          carbs_g?: number | null
+          fat_g?: number | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          category?: string | null
+          serving_size?: string | null
+          calories?: number
+          protein_g?: number | null
+          carbs_g?: number | null
+          fat_g?: number | null
+          created_at?: string
         }
       }
       weights: {

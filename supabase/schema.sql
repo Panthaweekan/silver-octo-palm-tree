@@ -39,8 +39,9 @@ CREATE TABLE IF NOT EXISTS public.workouts (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
   date DATE NOT NULL DEFAULT CURRENT_DATE,
+  name TEXT, -- User friendly name e.g. "Morning Legs"
   type TEXT NOT NULL CHECK (type IN ('cardio', 'strength', 'hiit', 'yoga', 'sports', 'walking', 'cycling', 'swimming', 'other')),
-  duration_minutes INTEGER NOT NULL CHECK (duration_minutes > 0),
+  duration_minutes INTEGER CHECK (duration_minutes > 0),
   distance_km NUMERIC(6,2),
   calories_burned INTEGER CHECK (calories_burned >= 0),
   notes TEXT,
@@ -52,6 +53,9 @@ CREATE TABLE IF NOT EXISTS public.workouts (
 CREATE INDEX IF NOT EXISTS workouts_user_id_idx ON public.workouts(user_id);
 CREATE INDEX IF NOT EXISTS workouts_date_idx ON public.workouts(date DESC);
 CREATE INDEX IF NOT EXISTS workouts_user_date_idx ON public.workouts(user_id, date DESC);
+
+-- =====================================================
+
 
 -- =====================================================
 -- 3. MEALS TABLE
@@ -419,44 +423,7 @@ FROM public.profiles p;
 -- SEED DATA: Common food items
 -- =====================================================
 
--- Create a food database table (optional for MVP)
-CREATE TABLE IF NOT EXISTS public.food_database (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name TEXT NOT NULL,
-  category TEXT,
-  serving_size TEXT,
-  calories INTEGER NOT NULL,
-  protein_g NUMERIC(6,2) DEFAULT 0,
-  carbs_g NUMERIC(6,2) DEFAULT 0,
-  fat_g NUMERIC(6,2) DEFAULT 0,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
 
--- Enable RLS for food database (public read, admin write)
-ALTER TABLE public.food_database ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Anyone can read food database"
-  ON public.food_database FOR SELECT
-  USING (true);
-
--- Add search index for food names
-CREATE INDEX IF NOT EXISTS food_database_name_idx ON public.food_database USING GIN(to_tsvector('english', name));
-
--- Insert common foods (sample data)
-INSERT INTO public.food_database (name, category, serving_size, calories, protein_g, carbs_g, fat_g)
-VALUES
-  ('ข้าวผัด', 'Thai Food', '1 จาน (300g)', 400, 8, 60, 12),
-  ('ข้าวเปล่า', 'Staples', '1 ทัพพี (100g)', 130, 2.7, 28, 0.3),
-  ('ไข่ดาว', 'Protein', '1 ฟอง', 90, 6, 0.4, 7),
-  ('ไก่ย่าง', 'Protein', '100g', 165, 31, 0, 3.6),
-  ('ผัดไทย', 'Thai Food', '1 จาน (300g)', 450, 15, 50, 20),
-  ('ต้มยำกุ้ง', 'Thai Food', '1 ชาม (250ml)', 120, 10, 8, 5),
-  ('ส้มตำ', 'Thai Food', '1 จาน (150g)', 100, 3, 18, 2),
-  ('กล้วยหอม', 'Fruits', '1 ผล', 105, 1.3, 27, 0.4),
-  ('แอปเปิ้ล', 'Fruits', '1 ผล (182g)', 95, 0.5, 25, 0.3),
-  ('น้ำ', 'Beverages', '1 แก้ว (250ml)', 0, 0, 0, 0),
-  ('กาแฟดำ', 'Beverages', '1 แก้ว (240ml)', 2, 0.3, 0, 0),
-  ('นมสด', 'Beverages', '1 แก้ว (240ml)', 150, 8, 12, 8);
 
 -- =====================================================
 -- STORAGE BUCKETS

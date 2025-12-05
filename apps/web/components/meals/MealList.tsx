@@ -3,6 +3,7 @@
 import { MealCard } from './MealCard'
 import { MealType } from '@/lib/constants'
 import { formatCalories } from '@/lib/formatters'
+import { useLanguage } from '@/components/providers/LanguageProvider'
 
 interface Meal {
   id: string
@@ -22,6 +23,7 @@ interface MealListProps {
 }
 
 export function MealList({ meals, userId }: MealListProps) {
+  const { t, language } = useLanguage()
   // Group meals by date
   const groupedMeals = meals.reduce((groups, meal) => {
     const date = meal.date
@@ -44,11 +46,11 @@ export function MealList({ meals, userId }: MealListProps) {
     yesterday.setDate(yesterday.getDate() - 1)
 
     if (dateString === today.toISOString().split('T')[0]) {
-      return 'Today'
+      return t('common.today')
     } else if (dateString === yesterday.toISOString().split('T')[0]) {
-      return 'Yesterday'
+      return t('common.yesterday')
     } else {
-      return date.toLocaleDateString('en-US', { 
+      return date.toLocaleDateString(language === 'th' ? 'th-TH' : 'en-US', { 
         weekday: 'long', 
         year: 'numeric', 
         month: 'long', 
@@ -74,7 +76,7 @@ export function MealList({ meals, userId }: MealListProps) {
                 {formatDateHeading(date)}
               </h2>
               <span className="text-sm font-medium text-muted-foreground">
-                Total: <span className="text-foreground font-bold">{formatCalories(totalCalories)}</span>
+                {t('common.total')}: <span className="text-foreground font-bold">{formatCalories(totalCalories)}</span>
               </span>
             </div>
             <div className="grid gap-4">

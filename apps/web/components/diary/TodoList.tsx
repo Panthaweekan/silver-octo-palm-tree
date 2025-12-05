@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { useToast } from '@/hooks/use-toast'
+import { useLanguage } from '@/components/providers/LanguageProvider'
 
 interface Todo {
   id: string
@@ -26,6 +27,7 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
   const [loading, setLoading] = useState(false)
   const supabase = createClient()
   const { toast } = useToast()
+  const { t } = useLanguage()
 
   // Fetch todos if date changes or initialTodos is empty (and we expect data)
   useEffect(() => {
@@ -62,7 +64,7 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
       setTodos(prev => prev.map(t => t.id === tempId ? data : t))
     } catch (error) {
       console.error('Error adding todo:', error)
-      toast.error('Failed to add task')
+      toast.error(t('todo.failedAdd'))
       setTodos(prev => prev.filter(t => t.id !== tempId))
     }
   }
@@ -80,7 +82,7 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
       if (error) throw error
     } catch (error) {
       console.error('Error toggling todo:', error)
-      toast.error('Failed to update task')
+      toast.error(t('todo.failedUpdate'))
       // Revert
       setTodos(prev => prev.map(t => t.id === id ? { ...t, completed: !completed } : t))
     }
@@ -100,18 +102,18 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
       if (error) throw error
     } catch (error) {
       console.error('Error deleting todo:', error)
-      toast.error('Failed to delete task')
+      toast.error(t('todo.failedDelete'))
       setTodos(prevTodos)
     }
   }
 
   const loadTemplate = async () => {
     const template = [
-      "Drink 3L of water 💧",
-      "Eat 30g protein at breakfast 🍳",
-      "Walk 8,000 steps 🚶",
-      "No screens 1h before bed 📵",
-      "Sleep 7+ hours 😴"
+      t('todo.template.water'),
+      t('todo.template.protein'),
+      t('todo.template.steps'),
+      t('todo.template.screens'),
+      t('todo.template.sleep')
     ]
 
     setLoading(true)
@@ -137,10 +139,10 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
       }
       
       setTodos(prev => [...prev, ...newTodos])
-      toast.success('FitJourney template loaded!')
+      toast.success(t('todo.templateLoaded'))
     } catch (error) {
       console.error('Error loading template:', error)
-      toast.error('Failed to load template')
+      toast.error(t('todo.failedLoad'))
     } finally {
       setLoading(false)
     }
@@ -149,7 +151,7 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-lg">To-Do List</h3>
+        <h3 className="font-semibold text-lg">{t('todo.title')}</h3>
         <span className="text-sm text-muted-foreground">
           {todos.filter(t => t.completed).length}/{todos.length}
         </span>
@@ -157,7 +159,7 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
 
       <form onSubmit={addTodo} className="flex gap-2">
         <Input
-          placeholder="Add a new task..."
+          placeholder={t('todo.placeholder')}
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
           className="flex-1"
@@ -171,11 +173,11 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
         {todos.length === 0 && (
           <div className="text-center py-6 space-y-3">
             <p className="text-sm text-muted-foreground">
-              No tasks yet. Start fresh or use a template!
+              {t('todo.noTasks')}
             </p>
             <Button variant="outline" size="sm" onClick={loadTemplate} disabled={loading}>
               {loading ? <Loader2 className="h-3 w-3 animate-spin mr-2" /> : null}
-              Load FitJourney Template 🚀
+              {t('todo.loadTemplate')}
             </Button>
           </div>
         )}
