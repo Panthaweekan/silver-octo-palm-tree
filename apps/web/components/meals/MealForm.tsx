@@ -29,6 +29,7 @@ import { Calendar, Utensils, Flame, FileText, Beef, Wheat, Droplet } from 'lucid
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { FoodSearch } from './FoodSearch'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface MealFormDialogProps {
   userId: string
@@ -64,6 +65,7 @@ export function MealFormDialog({
 
   const router = useRouter()
   const supabase = createClient()
+  const queryClient = useQueryClient()
 
   const isEditing = !!initialData
 
@@ -132,7 +134,7 @@ export function MealFormDialog({
       if (isEditing) {
         const { error } = await (supabase
           .from('meals') as any)
-          .insert(data)
+          .update(data)
           .eq('id', initialData.id)
 
         if (error) {
@@ -156,6 +158,7 @@ export function MealFormDialog({
 
       setOpen(false)
       router.refresh()
+      await queryClient.invalidateQueries({ queryKey: ['diary'] })
       
       // Reset form if not editing
       if (!isEditing) {

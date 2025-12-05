@@ -72,20 +72,20 @@ export function HabitCard({ habit, log, userId }: HabitCardProps) {
   }
 
   return (
-    <Card className={cn("transition-all", isCompleted ? "bg-green-50 border-green-200" : "")}>
+    <Card className={cn("transition-all", isCompleted ? "bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-900" : "")}>
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <div>
-            <CardTitle className={cn("text-lg", isCompleted ? "text-green-900" : "")}>
+            <CardTitle className={cn("text-lg", isCompleted ? "text-green-900 dark:text-green-100" : "")}>
               {habit.name}
             </CardTitle>
             {habit.description && (
-              <p className="text-sm text-gray-500 mt-1">{habit.description}</p>
+              <p className="text-sm text-muted-foreground mt-1">{habit.description}</p>
             )}
           </div>
           <div className="flex items-center gap-2">
             {isCompleted && (
-              <div className="bg-green-100 p-1.5 rounded-full">
+              <div className="bg-green-100 dark:bg-green-800 p-1.5 rounded-full">
                 <Check className="h-4 w-4 text-green-600" />
               </div>
             )}
@@ -121,7 +121,7 @@ export function HabitCard({ habit, log, userId }: HabitCardProps) {
       <CardContent>
         
         <div className="flex items-center justify-between mt-2">
-          <div className="text-sm font-medium text-gray-600">
+          <div className="text-sm font-medium text-muted-foreground">
             {currentCount} / {habit.target_value}
           </div>
           

@@ -21,6 +21,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Plus } from 'lucide-react'
 import { toast } from '@/hooks/use-toast'
+import { useQueryClient } from '@tanstack/react-query'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -36,6 +37,7 @@ export function HabitForm({ userId }: { userId: string }) {
   const [open, setOpen] = useState(false)
   const router = useRouter()
   const supabase = createClient()
+  const queryClient = useQueryClient()
 
   const {
     register,
@@ -67,6 +69,7 @@ export function HabitForm({ userId }: { userId: string }) {
       setOpen(false)
       reset()
       router.refresh()
+      await queryClient.invalidateQueries({ queryKey: ['diary'] })
     } catch (error) {
       console.error('Error creating habit:', error)
       toast.error('Failed to create habit')

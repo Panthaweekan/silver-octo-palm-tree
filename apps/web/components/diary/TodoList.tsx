@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { useToast } from '@/hooks/use-toast'
 import { useLanguage } from '@/components/providers/LanguageProvider'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface Todo {
   id: string
@@ -28,6 +29,7 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
   const supabase = createClient()
   const { toast } = useToast()
   const { t } = useLanguage()
+  const queryClient = useQueryClient()
 
   // Fetch todos if date changes or initialTodos is empty (and we expect data)
   useEffect(() => {
@@ -62,6 +64,7 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
 
       // Replace temp ID with real ID
       setTodos(prev => prev.map(t => t.id === tempId ? data : t))
+      await queryClient.invalidateQueries({ queryKey: ['diary'] })
     } catch (error) {
       console.error('Error adding todo:', error)
       toast.error(t('todo.failedAdd'))
@@ -80,6 +83,7 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
         .eq('id', id)
 
       if (error) throw error
+      await queryClient.invalidateQueries({ queryKey: ['diary'] })
     } catch (error) {
       console.error('Error toggling todo:', error)
       toast.error(t('todo.failedUpdate'))
@@ -100,6 +104,7 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
         .eq('id', id)
 
       if (error) throw error
+      await queryClient.invalidateQueries({ queryKey: ['diary'] })
     } catch (error) {
       console.error('Error deleting todo:', error)
       toast.error(t('todo.failedDelete'))
@@ -140,6 +145,7 @@ export function TodoList({ userId, date, initialTodos = [] }: TodoListProps) {
       
       setTodos(prev => [...prev, ...newTodos])
       toast.success(t('todo.templateLoaded'))
+      await queryClient.invalidateQueries({ queryKey: ['diary'] })
     } catch (error) {
       console.error('Error loading template:', error)
       toast.error(t('todo.failedLoad'))
