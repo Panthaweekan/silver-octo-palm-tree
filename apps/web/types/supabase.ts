@@ -280,6 +280,7 @@ export interface Database {
           created_at?: string
           updated_at?: string
         }
+        Relationships: []
       }
       food_database: {
         Row: {
@@ -315,6 +316,7 @@ export interface Database {
           fat_g?: number | null
           created_at?: string
         }
+        Relationships: []
       }
       weights: {
         Row: {

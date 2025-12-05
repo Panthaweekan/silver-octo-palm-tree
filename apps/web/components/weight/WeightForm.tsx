@@ -24,6 +24,7 @@ import {
   validateDate,
 } from '@/lib/validations'
 import { Calendar, Scale, Activity, Ruler, FileText } from 'lucide-react'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface WeightFormDialogProps {
   userId: string
@@ -45,6 +46,7 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const supabase = createClient()
+  const queryClient = useQueryClient()
 
   const isEditing = !!initialData
 
@@ -145,6 +147,7 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
 
       setOpen(false)
       router.refresh()
+      await queryClient.invalidateQueries({ queryKey: ['diary'] })
     } catch (error) {
       toast.error('An error occurred. Please try again.')
     } finally {

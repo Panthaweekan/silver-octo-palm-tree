@@ -28,6 +28,7 @@ import { validateDate, validateDuration, validateDistance, validateCalories } fr
 import { WORKOUT_TYPES, WorkoutType } from '@/lib/constants'
 import { calculateCaloriesBurned, shouldShowDistance } from '@/lib/workout-utils'
 import { Calendar, Clock, MapPin, Flame, FileText, Activity } from 'lucide-react'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface WorkoutFormDialogProps {
   userId: string
@@ -55,6 +56,7 @@ export function WorkoutFormDialog({
   const [selectedType, setSelectedType] = useState<WorkoutType>(initialData?.type || 'cardio')
   const router = useRouter()
   const supabase = createClient()
+  const queryClient = useQueryClient()
 
   const isEditing = !!initialData
   const showDistance = shouldShowDistance(selectedType)
@@ -119,7 +121,7 @@ export function WorkoutFormDialog({
       if (isEditing) {
         const { error } = await (supabase
           .from('workouts') as any)
-          .insert(data)
+          .update(data)
           .eq('id', initialData.id)
 
         if (error) {
@@ -143,6 +145,7 @@ export function WorkoutFormDialog({
 
       setOpen(false)
       router.refresh()
+      await queryClient.invalidateQueries({ queryKey: ['diary'] })
     } catch (error) {
       toast.error('An error occurred. Please try again.')
     } finally {
