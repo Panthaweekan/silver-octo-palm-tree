@@ -1,7 +1,7 @@
-import { createServerClient } from '@/lib/supabase/server'
+'use client'
 
-export const dynamic = 'force-dynamic'
-import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { WeeklyTrendsChart } from '@/components/analytics/WeeklyTrendsChart'
 import { CalorieWeightChart } from '@/components/analytics/CalorieWeightChart'
@@ -9,52 +9,98 @@ import { HabitStreaks } from '@/components/analytics/HabitStreaks'
 import { MacroDistributionChart } from '@/components/analytics/MacroDistributionChart'
 import { SleepQualityChart } from '@/components/analytics/SleepQualityChart'
 import { AnalyticsSummaryCards } from '@/components/analytics/AnalyticsSummaryCards'
-import { format, subDays, isSameDay, parseISO } from 'date-fns'
+import { format, subDays, parseISO } from 'date-fns'
+import { useQuery } from '@tanstack/react-query'
+import { Loader2 } from 'lucide-react'
+import { useEffect } from 'react'
+import type { Database } from '@/types/supabase'
 
-export default async function AnalyticsPage() {
-  const supabase = createServerClient()
+type Meal = Database['public']['Tables']['meals']['Row']
+type Workout = Database['public']['Tables']['workouts']['Row']
+type Weight = Database['public']['Tables']['weights']['Row']
+type Habit = Database['public']['Tables']['habits']['Row']
+type HabitLog = Database['public']['Tables']['habit_logs']['Row']
+type Profile = Database['public']['Tables']['profiles']['Row']
+type SleepLog = Database['public']['Tables']['sleep_logs']['Row']
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+export default function AnalyticsPage() {
+  const supabase = createClient()
+  const router = useRouter()
 
-  if (!user) {
-    redirect('/auth/login')
+  const { data: user, isLoading: userLoading } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      return user
+    }
+  })
+
+  useEffect(() => {
+    if (!userLoading && !user) {
+      router.push('/auth/login')
+    }
+  }, [user, userLoading, router])
+
+  const { data: analyticsData, isLoading: dataLoading } = useQuery({
+    queryKey: ['analytics', user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const today = new Date()
+      const last7Days = Array.from({ length: 7 }, (_, i) => {
+        const d = subDays(today, 6 - i)
+        return format(d, 'yyyy-MM-dd')
+      })
+      const last30Days = Array.from({ length: 30 }, (_, i) => {
+        const d = subDays(today, 29 - i)
+        return format(d, 'yyyy-MM-dd')
+      })
+
+      const [
+        { data: meals },
+        { data: workouts },
+        { data: weights },
+        { data: habits },
+        { data: habitLogs },
+        { data: profile },
+        { data: sleepLogs }
+      ] = await Promise.all([
+        supabase.from('meals').select('*').eq('user_id', user!.id).gte('date', last30Days[0]),
+        supabase.from('workouts').select('*').eq('user_id', user!.id).gte('date', last30Days[0]),
+        supabase.from('weights').select('*').eq('user_id', user!.id).order('date', { ascending: true }),
+        supabase.from('habits').select('*').eq('user_id', user!.id),
+        supabase.from('habit_logs').select('*').eq('user_id', user!.id).gte('date', last7Days[0]),
+        supabase.from('profiles').select('*').eq('id', user!.id).single(),
+        supabase.from('sleep_logs').select('*').eq('user_id', user!.id).gte('date', last7Days[0])
+      ])
+
+      return {
+        meals: (meals as unknown as Meal[]) || [],
+        workouts: (workouts as unknown as Workout[]) || [],
+        weights: (weights as unknown as Weight[]) || [],
+        habits: (habits as unknown as Habit[]) || [],
+        habitLogs: (habitLogs as unknown as HabitLog[]) || [],
+        profile: (profile as unknown as Profile) || null,
+        sleepLogs: (sleepLogs as unknown as SleepLog[]) || [],
+        last7Days,
+        last30Days
+      }
+    }
+  })
+
+  if (userLoading || !user || dataLoading || !analyticsData) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    )
   }
 
-  const today = new Date()
-  const last7Days = Array.from({ length: 7 }, (_, i) => {
-    const d = subDays(today, 6 - i)
-    return format(d, 'yyyy-MM-dd')
-  })
-  const last30Days = Array.from({ length: 30 }, (_, i) => {
-    const d = subDays(today, 29 - i)
-    return format(d, 'yyyy-MM-dd')
-  })
-
-  // Fetch data
-  const [
-    { data: meals },
-    { data: workouts },
-    { data: weights },
-    { data: habits },
-    { data: habitLogs },
-    { data: profile },
-    { data: sleepLogs }
-  ] = await Promise.all([
-    supabase.from('meals').select('*').eq('user_id', user.id).gte('date', last30Days[0]),
-    supabase.from('workouts').select('*').eq('user_id', user.id).gte('date', last30Days[0]),
-    supabase.from('weights').select('*').eq('user_id', user.id).order('date', { ascending: true }),
-    supabase.from('habits').select('*').eq('user_id', user.id),
-    supabase.from('habit_logs').select('*').eq('user_id', user.id).gte('date', last7Days[0]),
-    supabase.from('profiles').select('*').eq('id', user.id).single(),
-    supabase.from('sleep_logs').select('*').eq('user_id', user.id).gte('date', last7Days[0])
-  ])
+  const { meals, workouts, weights, habits, habitLogs, profile, sleepLogs, last7Days, last30Days } = analyticsData
 
   // Process Weekly Trends Data
   const weeklyTrendsData = last7Days.map(date => {
-    const dayMeals = meals?.filter(m => m.date === date) || []
-    const dayWorkouts = workouts?.filter(w => w.date === date) || []
+    const dayMeals = meals.filter(m => m.date === date)
+    const dayWorkouts = workouts.filter(w => w.date === date)
     
     return {
       date: format(parseISO(date), 'EEE'),
@@ -64,7 +110,7 @@ export default async function AnalyticsPage() {
   })
 
   // Process Macro Distribution (Last 7 Days)
-  const recentMeals = meals?.filter(m => last7Days.includes(m.date)) || []
+  const recentMeals = meals.filter(m => last7Days.includes(m.date))
   const totalMacros = recentMeals.reduce((acc, meal) => ({
     protein: acc.protein + (Number(meal.protein_g) || 0),
     carbs: acc.carbs + (Number(meal.carbs_g) || 0),
@@ -80,22 +126,22 @@ export default async function AnalyticsPage() {
 
   // Process Sleep Data
   const sleepData = last7Days.map(date => {
-    const log = sleepLogs?.find(l => l.date === date)
+    const log = sleepLogs.find(l => l.date === date)
     return {
       date: format(parseISO(date), 'EEE'),
       duration: log ? log.duration_minutes / 60 : 0,
-      quality: log ? log.quality : 'N/A'
+      quality: log ? (log.quality || 'N/A') : 'N/A'
     }
   })
 
   // Calculate Summary Metrics
-  const currentWeight = weights && weights.length > 0 ? weights[weights.length - 1].weight_kg : (profile?.weight_kg || 0)
-  const startWeight = weights && weights.length > 0 ? weights[0].weight_kg : currentWeight
+  const currentWeight = weights.length > 0 ? weights[weights.length - 1].weight_kg : 70
+  const startWeight = weights.length > 0 ? weights[0].weight_kg : currentWeight
   const weightChange = currentWeight - startWeight
   
   const avgCalories = weeklyTrendsData.reduce((sum, day) => sum + day.caloriesIn, 0) / 7
-  const workoutConsistency = workouts?.filter(w => last7Days.includes(w.date)).length || 0
-  const avgSleep = (sleepLogs?.reduce((sum, log) => sum + (log.duration_minutes || 0), 0) || 0) / 60 / (sleepLogs?.length || 1)
+  const workoutConsistency = workouts.filter(w => last7Days.includes(w.date)).length
+  const avgSleep = (sleepLogs.reduce((sum, log) => sum + (log.duration_minutes || 0), 0) || 0) / 60 / (sleepLogs.length || 1)
 
   const summaryMetrics = {
     currentWeight,
@@ -127,15 +173,15 @@ export default async function AnalyticsPage() {
 
   // Process Calorie vs Weight Data
   const calorieWeightData = last30Days.map(date => {
-    const dayMeals = meals?.filter(m => m.date === date) || []
-    const dayWeight = weights?.find(w => w.date === date)
+    const dayMeals = meals.filter(m => m.date === date)
+    const dayWeight = weights.find(w => w.date === date)
     
     // Use current weight if day weight is missing, or fallback to profile weight
-    const weight = dayWeight?.weight_kg || profile?.weight_kg || 70
+    const weight = dayWeight?.weight_kg || 70
     const height = profile?.height_cm || 170
     const age = profile?.date_of_birth ? new Date().getFullYear() - new Date(profile.date_of_birth).getFullYear() : 30
     const gender = profile?.gender || 'male'
-    const activityLevel = profile?.activity_level || 'sedentary'
+    const activityLevel = (profile as any)?.activity_level || 'sedentary'
 
     const bmr = calculateBMR(weight, height, age, gender)
     const tdee = bmr * getActivityMultiplier(activityLevel)
@@ -150,13 +196,13 @@ export default async function AnalyticsPage() {
   })
 
   // Process Habit Streaks
-  const habitStreaksData = habits?.map(habit => {
-    const logs = habitLogs?.filter(l => l.habit_id === habit.id) || []
+  const habitStreaksData = habits.map(habit => {
+    const logs = habitLogs.filter(l => l.habit_id === habit.id)
     
     // Calculate last 7 days status
     const last7DaysStatus = last7Days.map(date => {
       const log = logs.find(l => l.date === date)
-      return log ? (log.value >= habit.target_value) : false
+      return log ? ((log.value || 0) >= (habit.target_value || 1)) : false
     })
 
     // Calculate current streak (simplified)
@@ -168,7 +214,7 @@ export default async function AnalyticsPage() {
 
     // Calculate completion rate (last 30 days would be better, but using available data)
     const totalLogs = logs.length
-    const completedLogs = logs.filter(l => l.value >= habit.target_value).length
+    const completedLogs = logs.filter(l => (l.value || 0) >= (habit.target_value || 1)).length
     const completionRate = totalLogs > 0 ? (completedLogs / 7) * 100 : 0 // Normalized to last 7 days for now
 
     return {
@@ -178,7 +224,7 @@ export default async function AnalyticsPage() {
       completionRate,
       last7Days: last7DaysStatus
     }
-  }) || []
+  })
 
   return (
     <div className="space-y-8">

@@ -1,35 +1,67 @@
-import { createServerClient } from '@/lib/supabase/server'
+'use client'
 
-export const dynamic = 'force-dynamic'
+import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { Button } from '@/components/ui/button'
-import { Plus, Apple } from 'lucide-react'
+import { Plus, Apple, Loader2 } from 'lucide-react'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { MealList } from '@/components/meals/MealList'
 import { MealFormDialog } from '@/components/meals/MealForm'
+import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
+import type { Database } from '@/types/supabase'
 
-export default async function MealsPage() {
-  const supabase = createServerClient()
+type Meal = Database['public']['Tables']['meals']['Row']
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+export default function MealsPage() {
+  const supabase = createClient()
+  const router = useRouter()
 
-  if (!user) return null
+  const { data: user, isLoading: userLoading } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      return user
+    }
+  })
 
-  // Fetch meals for the last 30 days
-  const thirtyDaysAgo = new Date()
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-  const thirtyDaysAgoStr = thirtyDaysAgo.toISOString().split('T')[0]
+  useEffect(() => {
+    if (!userLoading && !user) {
+      router.push('/auth/login')
+    }
+  }, [user, userLoading, router])
 
-  const { data: meals } = await supabase
-    .from('meals')
-    .select('*')
-    .eq('user_id', user.id)
-    .gte('date', thirtyDaysAgoStr)
-    .order('date', { ascending: false })
+  const { data: mealsData, isLoading: dataLoading } = useQuery({
+    queryKey: ['meals', user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const today = new Date().toISOString().split('T')[0]
+      const [
+        { data: todayMeals },
+        { data: recentMeals }
+      ] = await Promise.all([
+        supabase.from('meals').select('*').eq('user_id', user!.id).eq('date', today).order('created_at', { ascending: false }),
+        supabase.from('meals').select('*').eq('user_id', user!.id).neq('date', today).order('date', { ascending: false }).limit(10)
+      ])
 
-  const hasData = meals && meals.length > 0
+      return {
+        todayMeals: (todayMeals as unknown as Meal[]) || [],
+        recentMeals: (recentMeals as unknown as Meal[]) || []
+      }
+    }
+  })
+
+  if (userLoading || !user || dataLoading) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  const allMeals = [...(mealsData?.todayMeals || []), ...(mealsData?.recentMeals || [])]
+  const hasData = allMeals.length > 0
 
   return (
     <div className="space-y-6">
@@ -55,7 +87,7 @@ export default async function MealsPage() {
           actionHref="#"
         />
       ) : (
-        <MealList meals={meals || []} userId={user.id} />
+        <MealList meals={allMeals as any} userId={user.id} />
       )}
     </div>
   )

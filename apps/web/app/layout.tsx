@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { cn } from '@/lib/utils'
 import { LanguageProvider } from '@/components/providers/LanguageProvider'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
+import { QueryProvider } from '@/components/providers/QueryProvider'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const kanit = Kanit({ 
@@ -55,10 +56,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <LanguageProvider>
-            {children}
-            <Toaster />
-          </LanguageProvider>
+          <QueryProvider>
+            <LanguageProvider>
+              {children}
+              <Toaster />
+            </LanguageProvider>
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>

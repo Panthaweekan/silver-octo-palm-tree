@@ -1,38 +1,67 @@
-import { createServerClient } from '@/lib/supabase/server'
+'use client'
 
-export const dynamic = 'force-dynamic'
+import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { Button } from '@/components/ui/button'
-import { Plus, Scale } from 'lucide-react'
+import { Plus, Scale, Loader2 } from 'lucide-react'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { WeightList } from '@/components/weight/WeightList'
 import { WeightFormDialog } from '@/components/weight/WeightForm'
 import { WeightChart } from '@/components/weight/WeightChart'
 import { WeightStats } from '@/components/weight/WeightStats'
+import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
+import type { Database } from '@/types/supabase'
 
-export default async function WeightPage() {
-  const supabase = createServerClient()
+type Weight = Database['public']['Tables']['weights']['Row']
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+export default function WeightPage() {
+  const supabase = createClient()
+  const router = useRouter()
 
-  if (!user) return null
+  const { data: user, isLoading: userLoading } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      return user
+    }
+  })
 
-  // Fetch weight history
-  const { data: weights } = await supabase
-    .from('weights')
-    .select('*')
-    .eq('user_id', user.id)
-    .order('date', { ascending: false })
+  useEffect(() => {
+    if (!userLoading && !user) {
+      router.push('/auth/login')
+    }
+  }, [user, userLoading, router])
 
-  // Fetch user profile for height (needed for BMI)
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('height_cm')
-    .eq('id', user.id)
-    .single()
+  const { data: weightData, isLoading: dataLoading } = useQuery({
+    queryKey: ['weight', user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const [
+        { data: weights },
+        { data: profile }
+      ] = await Promise.all([
+        supabase.from('weights').select('*').eq('user_id', user!.id).order('date', { ascending: false }),
+        supabase.from('profiles').select('height_cm').eq('id', user!.id).single()
+      ])
 
+      return {
+        weights: (weights as unknown as Weight[]) || [],
+        heightCm: (profile as any)?.height_cm
+      }
+    }
+  })
+
+  if (userLoading || !user || dataLoading || !weightData) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  const { weights, heightCm } = weightData
   const hasData = weights && weights.length > 0
 
   return (
@@ -60,16 +89,15 @@ export default async function WeightPage() {
         />
       ) : (
         <>
-          <WeightStats weights={weights} heightCm={profile?.height_cm} />
+          <WeightStats weights={weights as any} heightCm={heightCm} />
           
-          <div className="grid gap-6 lg:grid-cols-3">
-            <div className="lg:col-span-2">
-              <WeightChart weights={weights} />
-            </div>
-            <div>
-              <WeightList weights={weights} userId={user.id} />
+          <div className="grid gap-6 lg:grid-cols-1">
+            <div className="lg:col-span-1">
+              <WeightChart weights={weights as any} />
             </div>
           </div>
+          
+          <WeightList weights={weights as any} userId={user.id} />
         </>
       )}
     </div>

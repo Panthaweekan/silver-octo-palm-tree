@@ -42,21 +42,21 @@ export function HabitCard({ habit, log, userId }: HabitCardProps) {
       
       if (log?.id) {
         // Update existing log
-        const { error } = await supabase
-          .from('habit_logs')
+        const { error } = await (supabase
+          .from('habit_logs') as any)
           .update({ value: newCount })
           .eq('id', log.id)
 
         if (error) throw error
       } else {
         // Create new log
-        const { error } = await supabase
-          .from('habit_logs')
+        const { error } = await (supabase
+          .from('habit_logs') as any)
           .insert({
             user_id: userId,
             habit_id: habit.id,
             date: today,
-            value: newCount,
+            value: 1
           })
 
         if (error) throw error

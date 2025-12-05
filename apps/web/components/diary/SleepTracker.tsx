@@ -47,8 +47,8 @@ export function SleepTracker({ userId, date, initialLog }: SleepTrackerProps) {
     try {
       if (log) {
         // Update
-        const { error } = await supabase
-          .from('sleep_logs')
+        const { error } = await (supabase
+          .from('sleep_logs') as any)
           .update({
             duration_minutes: duration,
             quality: quality
@@ -59,8 +59,8 @@ export function SleepTracker({ userId, date, initialLog }: SleepTrackerProps) {
         toast.success('Sleep log updated')
       } else {
         // Insert
-        const { data, error } = await supabase
-          .from('sleep_logs')
+        const { data, error } = await (supabase
+          .from('sleep_logs') as any)
           .insert({
             user_id: userId,
             date: date,

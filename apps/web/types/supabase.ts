@@ -255,6 +255,105 @@ export interface Database {
           created_at?: string
         }
       }
+      todos: {
+        Row: {
+          id: string
+          user_id: string
+          date: string
+          text: string
+          completed: boolean | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          date?: string
+          text: string
+          completed?: boolean | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          date?: string
+          text?: string
+          completed?: boolean | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      sleep_logs: {
+        Row: {
+          id: string
+          user_id: string
+          date: string
+          duration_minutes: number
+          quality: string | null
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          date?: string
+          duration_minutes: number
+          quality?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          date?: string
+          duration_minutes?: number
+          quality?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      daily_journals: {
+        Row: {
+          id: string
+          user_id: string
+          date: string
+          content: string
+          mood: string | null
+          energy_level: number | null
+          ai_summary: string | null
+          ai_insights: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          date?: string
+          content: string
+          mood?: string | null
+          energy_level?: number | null
+          ai_summary?: string | null
+          ai_insights?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          date?: string
+          content?: string
+          mood?: string | null
+          energy_level?: number | null
+          ai_summary?: string | null
+          ai_insights?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never

@@ -27,6 +27,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const profileSchema = z.object({
+  full_name: z.string().optional(),
+  activity_level: z.string().optional(),
   height_cm: z.coerce.number().min(0).max(300).optional(),
   current_weight_kg: z.coerce.number().min(0).max(500).optional(),
   target_weight_kg: z.coerce.number().min(0).max(500).optional(),
@@ -45,6 +47,8 @@ export function ProfileForm({ user }: { user: any }) {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema) as any,
     defaultValues: {
+      full_name: '',
+      activity_level: 'moderate',
       height_cm: undefined,
       current_weight_kg: undefined,
       target_weight_kg: undefined,
@@ -70,12 +74,15 @@ export function ProfileForm({ user }: { user: any }) {
         .single()
 
       if (profile) {
+        const p = profile as any
         form.reset({
-          height_cm: profile.height_cm || undefined,
-          current_weight_kg: weightData?.weight_kg || undefined,
-          target_weight_kg: profile.target_weight_kg || undefined,
-          date_of_birth: profile.date_of_birth || undefined,
-          gender: profile.gender || undefined,
+          height_cm: p.height_cm || undefined,
+          current_weight_kg: (weightData as any)?.weight_kg || undefined,
+          target_weight_kg: p.target_weight_kg || undefined,
+          date_of_birth: p.date_of_birth || undefined,
+          gender: p.gender || undefined,
+          full_name: p.full_name || '',
+          activity_level: p.activity_level || 'moderate',
         })
       }
     }
@@ -87,8 +94,8 @@ export function ProfileForm({ user }: { user: any }) {
     setLoading(true)
     try {
       // Update profile
-      const { error: profileError } = await supabase
-        .from('profiles')
+      const { error: profileError } = await (supabase
+        .from('profiles') as any)
         .update({
           height_cm: data.height_cm,
           target_weight_kg: data.target_weight_kg,
@@ -103,21 +110,22 @@ export function ProfileForm({ user }: { user: any }) {
       if (data.current_weight_kg) {
         // Check if we already have a weight entry for today
         const today = new Date().toISOString().split('T')[0]
-        const { data: existingWeight } = await supabase
+
+        const { data: latestWeight } = await supabase
           .from('weights')
           .select('id')
           .eq('user_id', user.id)
           .eq('date', today)
           .single()
 
-        if (existingWeight) {
-           await supabase
-            .from('weights')
+        if (latestWeight) {
+          const { error: weightError } = await (supabase
+            .from('weights') as any)
             .update({ weight_kg: data.current_weight_kg })
-            .eq('id', existingWeight.id)
+            .eq('id', (latestWeight as any).id)
         } else {
-           await supabase
-            .from('weights')
+           await (supabase
+            .from('weights') as any)
             .insert({
               user_id: user.id,
               weight_kg: data.current_weight_kg,

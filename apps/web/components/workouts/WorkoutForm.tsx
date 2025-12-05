@@ -117,9 +117,9 @@ export function WorkoutFormDialog({
 
     try {
       if (isEditing) {
-        const { error } = await supabase
-          .from('workouts')
-          .update(data)
+        const { error } = await (supabase
+          .from('workouts') as any)
+          .insert(data)
           .eq('id', initialData.id)
 
         if (error) {
@@ -130,7 +130,7 @@ export function WorkoutFormDialog({
 
         toast.success('Workout updated successfully!')
       } else {
-        const { error } = await supabase.from('workouts').insert(data)
+        const { error } = await (supabase.from('workouts') as any).insert(data)
 
         if (error) {
           toast.error(error.message)

@@ -1,62 +1,102 @@
-import { createServerClient } from '@/lib/supabase/server'
+'use client'
 
-export const dynamic = 'force-dynamic'
-import { redirect } from 'next/navigation'
-import { PageHeader } from '@/components/shared/PageHeader'
+import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader'
 import { StatTile } from '@/components/dashboard/stats'
 import { RecentWorkouts } from '@/components/dashboard/recent-workouts'
 import { RecentMeals } from '@/components/dashboard/recent-meals'
 import { GoalsCard } from '@/components/dashboard/GoalsCard'
-import { Button } from '@/components/ui/button'
-import { Plus, Dumbbell, TrendingUp, Apple, Scale } from 'lucide-react'
-import Link from 'next/link'
-import { Metadata } from 'next'
+import { Dumbbell, TrendingUp, Apple, Scale, Loader2 } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
 
-export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'Overview of your daily fitness progress',
-}
+export default function DashboardPage() {
+  const supabase = createClient()
+  const router = useRouter()
 
-export default async function DashboardPage() {
-  const supabase = createServerClient()
+  const { data: user, isLoading: userLoading } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      return user
+    }
+  })
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  useEffect(() => {
+    if (!userLoading && !user) {
+      router.push('/auth/login')
+    }
+  }, [user, userLoading, router])
 
-  if (!user) {
-    redirect('/auth/login')
+  const { data: profile } = useQuery({
+    queryKey: ['profile', user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user!.id)
+        .single()
+      return data
+    }
+  })
+
+  const { data: summary } = useQuery({
+    queryKey: ['daily_summary', user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('daily_summary')
+        .select('*')
+        .eq('user_id', user!.id)
+        .eq('date', new Date().toISOString().split('T')[0])
+        .single()
+      return data
+    }
+  })
+
+  const { data: latestWeight } = useQuery({
+    queryKey: ['latest_weight', user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('weights')
+        .select('weight_kg')
+        .eq('user_id', user!.id)
+        .order('date', { ascending: false })
+        .limit(1)
+        .single()
+      return data
+    }
+  })
+
+  if (userLoading) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    )
   }
 
-  // Fetch profile data
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
+  if (!user) {
+    return null // Will redirect via useEffect
+  }
 
-  // Fetch today's summary
-  const { data: summary } = await supabase
-    .from('daily_summary')
-    .select('*')
-    .eq('user_id', user.id)
-    .eq('date', new Date().toISOString().split('T')[0])
-    .single()
+  const defaultProfile = {
+    full_name: user?.user_metadata?.full_name || 'User',
+    height_cm: null,
+    target_weight_kg: null,
+    activity_level: 'moderate',
+    gender: 'other',
+    date_of_birth: null
+  }
 
-  // Fetch latest weight for the calculator
-  const { data: latestWeight } = await supabase
-    .from('weights')
-    .select('weight_kg')
-    .eq('user_id', user.id)
-    .order('date', { ascending: false })
-    .limit(1)
-    .single()
+  const currentProfile = profile || defaultProfile
 
-  // Combine profile with latest weight if available
   const profileWithWeight = {
-    ...profile,
-    weight_kg: latestWeight?.weight_kg || profile?.target_weight_kg || 70, // Fallback
+    ...(currentProfile as any),
+    weight_kg: (latestWeight as any)?.weight_kg || (currentProfile as any)?.target_weight_kg || 70,
   }
 
   const defaultSummary = {
@@ -71,7 +111,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <DashboardHeader userName={profile?.full_name || 'User'} />
+      <DashboardHeader userName={(currentProfile as any)?.full_name || 'User'} />
 
       {/* Bento Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[minmax(180px,auto)]">
@@ -115,7 +155,7 @@ export default async function DashboardPage() {
          {/* Stat: Weight (1x1) */}
          <StatTile
           title="Weight"
-          value={latestWeight?.weight_kg ? `${latestWeight.weight_kg} kg` : '--'}
+          value={(latestWeight as any)?.weight_kg ? `${(latestWeight as any).weight_kg} kg` : '--'}
           description="Latest"
           icon={<Scale className="h-4 w-4 text-purple-600" />}
           className="h-full"

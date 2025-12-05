@@ -90,17 +90,17 @@ export function SmartCalculator({ userId, currentData, children }: SmartCalculat
     setLoading(true)
     try {
       // Update profile with new target and stats
-      const { error } = await supabase
-        .from('profiles')
+      const { error } = await (supabase
+        .from('profiles') as any)
         .update({
           gender,
           date_of_birth: dob,
           height_cm: parseFloat(height),
-          target_calories: results?.target,
+          target_calories: Math.round(results?.target || 0),
           // We don't save weight here as it's in a separate table, 
           // but we could update the latest weight if we wanted to be thorough.
           // For now, let's just update profile settings.
-        })
+        } as any)
         .eq('id', userId)
 
       if (error) throw error
