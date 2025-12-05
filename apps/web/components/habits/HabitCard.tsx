@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Check, Plus, Minus } from 'lucide-react'
+import { Check, Plus, Minus, Trash2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { toast } from '@/hooks/use-toast'
@@ -83,14 +83,43 @@ export function HabitCard({ habit, log, userId }: HabitCardProps) {
               <p className="text-sm text-gray-500 mt-1">{habit.description}</p>
             )}
           </div>
-          {isCompleted && (
-            <div className="bg-green-100 p-1.5 rounded-full">
-              <Check className="h-4 w-4 text-green-600" />
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            {isCompleted && (
+              <div className="bg-green-100 p-1.5 rounded-full">
+                <Check className="h-4 w-4 text-green-600" />
+              </div>
+            )}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+              onClick={async () => {
+                if (!confirm('Are you sure you want to delete this habit?')) return
+                setLoading(true)
+                try {
+                  const { error } = await supabase
+                    .from('habits')
+                    .delete()
+                    .eq('id', habit.id)
+                  if (error) throw error
+                  router.refresh()
+                  toast.success('Habit deleted')
+                } catch (error) {
+                  console.error('Error deleting habit:', error)
+                  toast.error('Failed to delete habit')
+                } finally {
+                  setLoading(false)
+                }
+              }}
+              disabled={loading}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent>
+        
         <div className="flex items-center justify-between mt-2">
           <div className="text-sm font-medium text-gray-600">
             {currentCount} / {habit.target_value}
