@@ -28,6 +28,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const profileSchema = z.object({
   height_cm: z.coerce.number().min(0).max(300).optional(),
+  current_weight_kg: z.coerce.number().min(0).max(500).optional(),
   target_weight_kg: z.coerce.number().min(0).max(500).optional(),
   date_of_birth: z.string().optional(),
   gender: z.enum(['male', 'female', 'other']).optional(),
@@ -45,6 +46,7 @@ export function ProfileForm({ user }: { user: any }) {
     resolver: zodResolver(profileSchema) as any,
     defaultValues: {
       height_cm: undefined,
+      current_weight_kg: undefined,
       target_weight_kg: undefined,
       date_of_birth: undefined,
       gender: undefined,
@@ -53,18 +55,27 @@ export function ProfileForm({ user }: { user: any }) {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data, error } = await supabase
+      const { data: profile } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single()
 
-      if (data) {
+      const { data: weightData } = await supabase
+        .from('weights')
+        .select('weight_kg')
+        .eq('user_id', user.id)
+        .order('date', { ascending: false })
+        .limit(1)
+        .single()
+
+      if (profile) {
         form.reset({
-          height_cm: data.height_cm || undefined,
-          target_weight_kg: data.target_weight_kg || undefined,
-          date_of_birth: data.date_of_birth || undefined,
-          gender: data.gender || undefined,
+          height_cm: profile.height_cm || undefined,
+          current_weight_kg: weightData?.weight_kg || undefined,
+          target_weight_kg: profile.target_weight_kg || undefined,
+          date_of_birth: profile.date_of_birth || undefined,
+          gender: profile.gender || undefined,
         })
       }
     }
@@ -75,12 +86,45 @@ export function ProfileForm({ user }: { user: any }) {
   const onSubmit = async (data: ProfileFormValues) => {
     setLoading(true)
     try {
-      const { error } = await supabase
+      // Update profile
+      const { error: profileError } = await supabase
         .from('profiles')
-        .update(data)
+        .update({
+          height_cm: data.height_cm,
+          target_weight_kg: data.target_weight_kg,
+          date_of_birth: data.date_of_birth,
+          gender: data.gender,
+        })
         .eq('id', user.id)
 
-      if (error) throw error
+      if (profileError) throw profileError
+
+      // Update weight if changed
+      if (data.current_weight_kg) {
+        // Check if we already have a weight entry for today
+        const today = new Date().toISOString().split('T')[0]
+        const { data: existingWeight } = await supabase
+          .from('weights')
+          .select('id')
+          .eq('user_id', user.id)
+          .eq('date', today)
+          .single()
+
+        if (existingWeight) {
+           await supabase
+            .from('weights')
+            .update({ weight_kg: data.current_weight_kg })
+            .eq('id', existingWeight.id)
+        } else {
+           await supabase
+            .from('weights')
+            .insert({
+              user_id: user.id,
+              weight_kg: data.current_weight_kg,
+              date: today,
+            })
+        }
+      }
 
       toast.success(t('settings.profileUpdated'))
     } catch (error) {
@@ -116,12 +160,26 @@ export function ProfileForm({ user }: { user: any }) {
 
               <FormField
                 control={form.control}
+                name="current_weight_kg"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('settings.weight')} (Current)</FormLabel>
+                    <FormControl>
+                      <Input type="number" placeholder="70" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
                 name="target_weight_kg"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t('settings.weight')}</FormLabel>
+                    <FormLabel>{t('settings.weight')} (Target)</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="70" {...field} />
+                      <Input type="number" placeholder="65" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
