@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { DashboardShell } from '@/components/dashboard/shell'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const dynamic = 'force-dynamic'
 
@@ -19,5 +20,8 @@ export default async function DashboardLayout({
     redirect('/login')
   }
 
-  return <DashboardShell>{children}</DashboardShell>
+  return <>
+    <SpeedInsights />
+    <DashboardShell>{children}</DashboardShell>
+  </>
 }

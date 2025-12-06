@@ -121,16 +121,41 @@ export function DiaryView({
 
         {/* Quick Actions */}
         <div className="flex items-center gap-2">
+          {/* Meal */}
           <MealFormDialog userId={userId}>
             <Button size="sm" className="hidden md:flex lg:hidden">
-              <Plus className="h-4 w-4 mr-2" /> Log Meal
+              <Utensils className="h-4 w-4 mr-2" /> Log Meal
             </Button>
           </MealFormDialog>
           <MealFormDialog userId={userId}>
              <Button size="icon" className="md:hidden h-9 w-9">
-              <Plus className="h-4 w-4" />
+              <Utensils className="h-4 w-4" />
             </Button>
           </MealFormDialog>
+
+          {/* Workout */}
+          <WorkoutFormDialog userId={userId} userWeight={70}>
+            <Button size="sm" variant="outline" className="hidden md:flex lg:hidden">
+              <Dumbbell className="h-4 w-4 mr-2" /> Log Workout
+            </Button>
+          </WorkoutFormDialog>
+          <WorkoutFormDialog userId={userId} userWeight={70}>
+             <Button size="icon" variant="outline" className="md:hidden h-9 w-9">
+              <Dumbbell className="h-4 w-4" />
+            </Button>
+          </WorkoutFormDialog>
+
+          {/* Weight */}
+          <WeightFormDialog userId={userId}>
+            <Button size="sm" variant="outline" className="hidden md:flex lg:hidden">
+              <Scale className="h-4 w-4 mr-2" /> Log Weight
+            </Button>
+          </WeightFormDialog>
+          <WeightFormDialog userId={userId}>
+             <Button size="icon" variant="outline" className="md:hidden h-9 w-9">
+              <Scale className="h-4 w-4" />
+            </Button>
+          </WeightFormDialog>
         </div>
       </div>
 
@@ -141,7 +166,7 @@ export function DiaryView({
         <div className="lg:col-span-8 space-y-6">
           
           {/* Nutrition Hero - Full Width of Left Col */}
-          <div className="h-[300px]">
+          <div className="min-h-[300px] h-auto">
             <NutritionSummary summary={summary} />
           </div>
 
@@ -174,19 +199,7 @@ export function DiaryView({
 
         {/* Right Column (Sidebar) - Span 4 */}
         <div className="lg:col-span-4 space-y-4">
-          {/* Mobile-only Quick Actions Row */}
-          <div className="flex gap-2 lg:hidden overflow-x-auto pb-2 -mx-4 px-4 no-scrollbar">
-             <WorkoutFormDialog userId={userId} userWeight={70}>
-              <Button size="sm" variant="outline" className="shrink-0">
-                <Plus className="h-4 w-4 mr-2" /> Log Workout
-              </Button>
-            </WorkoutFormDialog>
-            <WeightFormDialog userId={userId}>
-               <Button size="sm" variant="outline" className="shrink-0">
-                <Plus className="h-4 w-4 mr-2" /> Log Weight
-              </Button>
-            </WeightFormDialog>
-          </div>
+
 
           {/* Desktop Sidebar Header */}
            <div className="hidden lg:flex items-center justify-between">

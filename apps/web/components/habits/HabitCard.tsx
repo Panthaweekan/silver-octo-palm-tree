@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { toast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface HabitCardProps {
   habit: {
@@ -27,6 +28,7 @@ export function HabitCard({ habit, log, userId }: HabitCardProps) {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const supabase = createClient()
+  const queryClient = useQueryClient()
   // const { toast } = useToast() // Removed, importing directly
 
   const currentCount = log?.value || 0
@@ -63,6 +65,7 @@ export function HabitCard({ habit, log, userId }: HabitCardProps) {
       }
 
       router.refresh()
+      await queryClient.invalidateQueries({ queryKey: ['diary'] })
     } catch (error) {
       console.error('Error updating habit:', error)
       toast.error('Failed to update habit')
@@ -103,6 +106,7 @@ export function HabitCard({ habit, log, userId }: HabitCardProps) {
                     .eq('id', habit.id)
                   if (error) throw error
                   router.refresh()
+                  await queryClient.invalidateQueries({ queryKey: ['diary'] })
                   toast.success('Habit deleted')
                 } catch (error) {
                   console.error('Error deleting habit:', error)

@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
 import { useLanguage } from '@/components/providers/LanguageProvider'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface SleepLog {
   id: string
@@ -30,6 +31,7 @@ export function SleepTracker({ userId, date, initialLog }: SleepTrackerProps) {
   const supabase = createClient()
   const { toast } = useToast()
   const { t } = useLanguage()
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     if (initialLog) {
@@ -59,6 +61,7 @@ export function SleepTracker({ userId, date, initialLog }: SleepTrackerProps) {
 
         if (error) throw error
         toast.success(t('sleep.updated'))
+        await queryClient.invalidateQueries({ queryKey: ['diary'] })
       } else {
         // Insert
         const { data, error } = await (supabase
@@ -75,6 +78,7 @@ export function SleepTracker({ userId, date, initialLog }: SleepTrackerProps) {
         if (error) throw error
         setLog(data)
         toast.success(t('sleep.success'))
+        await queryClient.invalidateQueries({ queryKey: ['diary'] })
       }
     } catch (error) {
       console.error('Error saving sleep log:', error)
