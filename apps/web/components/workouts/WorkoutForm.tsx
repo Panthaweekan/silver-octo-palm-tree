@@ -146,6 +146,7 @@ export function WorkoutFormDialog({
       setOpen(false)
       router.refresh()
       await queryClient.invalidateQueries({ queryKey: ['diary'] })
+      await queryClient.invalidateQueries({ queryKey: ['workouts'] })
     } catch (error) {
       toast.error('An error occurred. Please try again.')
     } finally {

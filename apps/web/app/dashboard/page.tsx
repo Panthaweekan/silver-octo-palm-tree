@@ -4,8 +4,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader'
 import { StatTile } from '@/components/dashboard/stats'
-import { RecentWorkouts } from '@/components/dashboard/recent-workouts'
-import { RecentMeals } from '@/components/dashboard/recent-meals'
+import { DashboardTimeline } from '@/components/dashboard/DashboardTimeline'
 import { GoalsCard } from '@/components/dashboard/GoalsCard'
 import { Dumbbell, TrendingUp, Apple, Scale, Loader2 } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
@@ -71,6 +70,29 @@ export default function DashboardPage() {
     }
   })
 
+  const { data: timelineData } = useQuery({
+    queryKey: ['dashboard_timeline', user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const today = new Date().toISOString().split('T')[0]
+      const [
+        { data: meals },
+        { data: workouts },
+        { data: weights }
+      ] = await Promise.all([
+        supabase.from('meals').select('*').eq('user_id', user!.id).eq('date', today).order('created_at', { ascending: false }),
+        supabase.from('workouts').select('*').eq('user_id', user!.id).eq('date', today).order('created_at', { ascending: false }),
+        supabase.from('weights').select('*').eq('user_id', user!.id).order('date', { ascending: false }).limit(5)
+      ])
+
+      return {
+        meals: meals || [],
+        workouts: workouts || [],
+        weights: weights || []
+      }
+    }
+  })
+
   if (userLoading) {
     return (
       <div className="flex h-[50vh] items-center justify-center">
@@ -108,6 +130,8 @@ export default function DashboardPage() {
   }
 
   const currentSummary = summary || defaultSummary
+
+
 
   return (
     <div className="space-y-6">
@@ -161,14 +185,14 @@ export default function DashboardPage() {
           className="h-full"
         />
 
-        {/* List: Recent Workouts (2x2) */}
-        <div className="md:col-span-2 md:row-span-2 h-full">
-          <RecentWorkouts userId={user.id} />
-        </div>
-
-        {/* List: Recent Meals (2x2) */}
-        <div className="md:col-span-2 md:row-span-2 h-full">
-          <RecentMeals userId={user.id} />
+        {/* Timeline (4x2) - Spans full width at bottom */}
+        <div className="md:col-span-2 lg:col-span-4 md:row-span-2 h-full">
+          <DashboardTimeline 
+            userId={user.id}
+            meals={timelineData?.meals || []}
+            workouts={timelineData?.workouts || []}
+            weights={timelineData?.weights || []}
+          />
         </div>
 
       </div>

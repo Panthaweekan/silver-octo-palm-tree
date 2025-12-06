@@ -2,7 +2,7 @@
 
 import { PageHeader } from '@/components/shared/PageHeader'
 import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
+import { Dumbbell, Apple, Scale } from 'lucide-react'
 import Link from 'next/link'
 import { useLanguage } from '@/components/providers/LanguageProvider'
 
@@ -21,14 +21,20 @@ export function DashboardHeader({ userName }: DashboardHeaderProps) {
         <div className="flex gap-2">
           <Link href="/dashboard/workouts">
             <Button size="sm">
-              <Plus className="h-4 w-4 mr-2" />
-              {t('dashboard.logWorkout')}
+              <Dumbbell className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">{t('dashboard.logWorkout')}</span>
             </Button>
           </Link>
           <Link href="/dashboard/meals">
             <Button size="sm" variant="outline">
-              <Plus className="h-4 w-4 mr-2" />
-              {t('dashboard.logMeal')}
+              <Apple className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">{t('dashboard.logMeal')}</span>
+            </Button>
+          </Link>
+          <Link href="/dashboard/weight">
+            <Button size="sm" variant="outline">
+              <Scale className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">{t('dashboard.logWeight')}</span>
             </Button>
           </Link>
         </div>

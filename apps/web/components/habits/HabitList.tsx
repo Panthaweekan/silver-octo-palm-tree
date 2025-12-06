@@ -11,9 +11,9 @@ interface HabitListProps {
 export function HabitList({ userId, habits, logs }: HabitListProps) {
   if (habits.length === 0) {
     return (
-      <div className="text-center py-12 bg-white rounded-lg border border-dashed border-gray-300">
-        <h3 className="mt-2 text-sm font-semibold text-gray-900">No habits defined</h3>
-        <p className="mt-1 text-sm text-gray-500">Get started by creating a new habit.</p>
+      <div className="text-center py-12 bg-card rounded-lg border border-dashed border-border">
+        <h3 className="mt-2 text-sm font-semibold text-foreground">No habits defined</h3>
+        <p className="mt-1 text-sm text-muted-foreground">Get started by creating a new habit.</p>
       </div>
     )
   }

@@ -148,6 +148,7 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
       setOpen(false)
       router.refresh()
       await queryClient.invalidateQueries({ queryKey: ['diary'] })
+      await queryClient.invalidateQueries({ queryKey: ['weights'] })
     } catch (error) {
       toast.error('An error occurred. Please try again.')
     } finally {

@@ -159,6 +159,7 @@ export function MealFormDialog({
       setOpen(false)
       router.refresh()
       await queryClient.invalidateQueries({ queryKey: ['diary'] })
+      await queryClient.invalidateQueries({ queryKey: ['meals'] })
       
       // Reset form if not editing
       if (!isEditing) {
