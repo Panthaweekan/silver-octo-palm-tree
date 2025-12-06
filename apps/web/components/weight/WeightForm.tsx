@@ -175,7 +175,7 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
 
           <div className="grid gap-6 py-4">
             {/* Date & Weight Row */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="date" className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -234,7 +234,7 @@ export function WeightFormDialog({ userId, children, initialData }: WeightFormDi
               <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Ruler className="h-4 w-4" /> Measurements (cm)
               </Label>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1.5">
                   <Label htmlFor="waist_cm" className="text-xs text-muted-foreground">Waist</Label>
                   <Input

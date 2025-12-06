@@ -170,7 +170,7 @@ export function WorkoutFormDialog({
 
           <div className="grid gap-6 py-4">
             {/* Date & Type Row */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="date" className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -212,7 +212,7 @@ export function WorkoutFormDialog({
             </div>
 
             {/* Duration & Distance Row */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="duration_minutes" className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
