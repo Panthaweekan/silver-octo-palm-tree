@@ -9,7 +9,9 @@ import { HabitStreaks } from '@/components/analytics/HabitStreaks'
 import { MacroDistributionChart } from '@/components/analytics/MacroDistributionChart'
 import { SleepQualityChart } from '@/components/analytics/SleepQualityChart'
 import { AnalyticsSummaryCards } from '@/components/analytics/AnalyticsSummaryCards'
-import { format, subDays, parseISO } from 'date-fns'
+import { GoalProgressChart } from '@/components/analytics/GoalProgressChart'
+import { VolumeProgressChart } from '@/components/analytics/VolumeProgressChart'
+import { format, subDays, parseISO, startOfWeek, endOfWeek, eachDayOfInterval } from 'date-fns'
 import { useQuery } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import { useEffect } from 'react'
@@ -22,6 +24,12 @@ type Habit = Database['public']['Tables']['habits']['Row']
 type HabitLog = Database['public']['Tables']['habit_logs']['Row']
 type Profile = Database['public']['Tables']['profiles']['Row']
 type SleepLog = Database['public']['Tables']['sleep_logs']['Row']
+type WorkoutSet = Database['public']['Tables']['workout_sets']['Row']
+interface WorkoutWithSets extends Workout {
+   workout_exercises: {
+     workout_sets: WorkoutSet[]
+   }[]
+}
 
 export default function AnalyticsPage() {
   const supabase = createClient()
@@ -57,7 +65,7 @@ export default function AnalyticsPage() {
 
       const [
         { data: meals },
-        { data: workouts },
+        { data: workoutsData, error: workoutsError },
         { data: weights },
         { data: habits },
         { data: habitLogs },
@@ -73,9 +81,25 @@ export default function AnalyticsPage() {
         supabase.from('sleep_logs').select('*').eq('user_id', user!.id).gte('date', last7Days[0])
       ])
 
+      const workouts = workoutsData as Workout[] || []
+      let workoutsWithSets: WorkoutWithSets[] = []
+
+      if (workouts.length > 0) {
+        const workoutIds = workouts.map(w => w.id)
+        const { data: exercises } = await supabase
+          .from('workout_exercises')
+          .select('*, workout_sets(*)')
+          .in('workout_id', workoutIds)
+
+        workoutsWithSets = workouts.map(w => ({
+          ...w,
+          workout_exercises: ((exercises as any[])?.filter(e => e.workout_id === w.id)) || []
+        }))
+      }
+
       return {
         meals: (meals as unknown as Meal[]) || [],
-        workouts: (workouts as unknown as Workout[]) || [],
+        workouts: workoutsWithSets,
         weights: (weights as unknown as Weight[]) || [],
         habits: (habits as unknown as Habit[]) || [],
         habitLogs: (habitLogs as unknown as HabitLog[]) || [],
@@ -109,7 +133,7 @@ export default function AnalyticsPage() {
     }
   })
 
-  // Process Macro Distribution (Last 7 Days)
+  // Process Macro Distribution
   const recentMeals = meals.filter(m => last7Days.includes(m.date))
   const totalMacros = recentMeals.reduce((acc, meal) => ({
     protein: acc.protein + (Number(meal.protein_g) || 0),
@@ -117,7 +141,7 @@ export default function AnalyticsPage() {
     fat: acc.fat + (Number(meal.fat_g) || 0)
   }), { protein: 0, carbs: 0, fat: 0 })
   
-  const daysCount = 7 // Averaging over 7 days
+  const daysCount = 7
   const macroData = [
     { name: 'Protein', value: totalMacros.protein / daysCount, color: '#3b82f6' },
     { name: 'Carbs', value: totalMacros.carbs / daysCount, color: '#22c55e' },
@@ -154,7 +178,6 @@ export default function AnalyticsPage() {
   // Helper to calculate BMR
   const calculateBMR = (weight: number, height: number, age: number, gender: string) => {
     if (!weight || !height || !age) return 0
-    // Mifflin-St Jeor Equation
     const s = gender === 'female' ? -161 : 5
     return (10 * weight) + (6.25 * height) - (5 * age) + s
   }
@@ -176,7 +199,6 @@ export default function AnalyticsPage() {
     const dayMeals = meals.filter(m => m.date === date)
     const dayWeight = weights.find(w => w.date === date)
     
-    // Use current weight if day weight is missing, or fallback to profile weight
     const weight = dayWeight?.weight_kg || 70
     const height = profile?.height_cm || 170
     const age = profile?.date_of_birth ? new Date().getFullYear() - new Date(profile.date_of_birth).getFullYear() : 30
@@ -198,24 +220,20 @@ export default function AnalyticsPage() {
   // Process Habit Streaks
   const habitStreaksData = habits.map(habit => {
     const logs = habitLogs.filter(l => l.habit_id === habit.id)
-    
-    // Calculate last 7 days status
     const last7DaysStatus = last7Days.map(date => {
       const log = logs.find(l => l.date === date)
       return log ? ((log.value || 0) >= (habit.target_value || 1)) : false
     })
 
-    // Calculate current streak (simplified)
     let streak = 0
     for (let i = last7DaysStatus.length - 1; i >= 0; i--) {
       if (last7DaysStatus[i]) streak++
       else break
     }
 
-    // Calculate completion rate (last 30 days would be better, but using available data)
     const totalLogs = logs.length
     const completedLogs = logs.filter(l => (l.value || 0) >= (habit.target_value || 1)).length
-    const completionRate = totalLogs > 0 ? (completedLogs / 7) * 100 : 0 // Normalized to last 7 days for now
+    const completionRate = totalLogs > 0 ? (completedLogs / 7) * 100 : 0 
 
     return {
       id: habit.id,
@@ -226,6 +244,43 @@ export default function AnalyticsPage() {
     }
   })
 
+  // Process Volume Data
+  const volumeData = last30Days.map(date => {
+      const dayWorkouts = workouts.filter(w => w.date === date)
+      const dailyVolume = dayWorkouts.reduce((total, workout) => {
+          let workoutVolume = 0
+          
+          if (Array.isArray(workout.workout_exercises)) {
+              workout.workout_exercises.forEach(exercise => {
+                  if (Array.isArray(exercise.workout_sets)) {
+                      exercise.workout_sets.forEach((set: any) => {
+                          const weight = Number(set.weight_kg) || 0
+                          const reps = Number(set.reps) || 0
+                          if (weight > 0 && reps > 0) {
+                              workoutVolume += (weight * reps)
+                          }
+                      })
+                  }
+              })
+          }
+          return total + workoutVolume
+      }, 0)
+      
+      return {
+          date: format(parseISO(date), 'MMM d'),
+          volume: dailyVolume
+      }
+  })
+
+  // Goals Object
+  const goals = {
+    currentWeight,
+    targetWeight: profile?.target_weight_kg || null,
+    startWeight: startWeight,
+    avgCalories,
+    targetCalories: profile?.target_calories || null
+  }
+
   return (
     <div className="space-y-8">
       <PageHeader
@@ -234,9 +289,14 @@ export default function AnalyticsPage() {
       />
 
       <AnalyticsSummaryCards metrics={summaryMetrics} />
+      
+      <div className="grid gap-6 md:grid-cols-2">
+         <GoalProgressChart goals={goals} />
+         <VolumeProgressChart data={volumeData} />
+      </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <WeeklyTrendsChart data={weeklyTrendsData} />
+        <WeeklyTrendsChart data={weeklyTrendsData} targetCalories={profile?.target_calories} />
         <MacroDistributionChart data={macroData} />
       </div>
 
@@ -245,7 +305,11 @@ export default function AnalyticsPage() {
         <HabitStreaks habits={habitStreaksData} />
       </div>
 
-      <CalorieWeightChart data={calorieWeightData} />
+      <CalorieWeightChart 
+        data={calorieWeightData} 
+        goalWeight={profile?.target_weight_kg}
+        targetCalories={profile?.target_calories}
+      />
     </div>
   )
 }

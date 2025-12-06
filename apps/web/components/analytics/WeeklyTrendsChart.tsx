@@ -9,8 +9,10 @@ import {
   Tooltip,
   Legend,
   CartesianGrid,
+  ReferenceLine,
 } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useLanguage } from '@/components/providers/LanguageProvider'
 
 interface WeeklyTrendsChartProps {
   data: {
@@ -18,9 +20,12 @@ interface WeeklyTrendsChartProps {
     caloriesIn: number
     caloriesBurned: number
   }[]
+  targetCalories?: number | null
 }
 
-export function WeeklyTrendsChart({ data }: WeeklyTrendsChartProps) {
+export function WeeklyTrendsChart({ data, targetCalories }: WeeklyTrendsChartProps) {
+  const { t } = useLanguage()
+
   if (data.length === 0) {
     return (
       <Card>
@@ -63,8 +68,20 @@ export function WeeklyTrendsChart({ data }: WeeklyTrendsChartProps) {
               <Tooltip 
                 cursor={{ fill: 'transparent' }}
                 contentStyle={{ borderRadius: '8px' }}
+                formatter={(value: number, name: string) => [
+                   value, 
+                   name === 'caloriesIn' ? t('dashboard.caloriesConsumed') : t('dashboard.caloriesBurned')
+                ]}
               />
               <Legend />
+              {targetCalories && (
+                 <ReferenceLine 
+                    y={targetCalories} 
+                    stroke="#22c55e" 
+                    strokeDasharray="3 3" 
+                    label={{ position: 'right', value: 'Target', fill: '#22c55e', fontSize: 10 }}
+                 />
+              )}
               <Bar 
                 dataKey="caloriesIn" 
                 name="Calories In" 
