@@ -11,6 +11,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  ReferenceLine,
 } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
@@ -24,9 +25,11 @@ interface CalorieWeightChartProps {
     bmr?: number
     tdee?: number
   }[]
+  goalWeight?: number | null
+  targetCalories?: number | null
 }
 
-export function CalorieWeightChart({ data }: CalorieWeightChartProps) {
+export function CalorieWeightChart({ data, goalWeight, targetCalories }: CalorieWeightChartProps) {
   const [showBMR, setShowBMR] = useState(false)
   const [showTDEE, setShowTDEE] = useState(false)
 
@@ -96,6 +99,26 @@ export function CalorieWeightChart({ data }: CalorieWeightChartProps) {
                 contentStyle={{ borderRadius: '8px' }}
               />
               <Legend />
+              
+              {targetCalories && (
+                <ReferenceLine 
+                  y={targetCalories} 
+                  yAxisId="right" 
+                  stroke="#22c55e" 
+                  strokeDasharray="3 3" 
+                  label={{ position: 'right', value: 'Goal', fill: '#22c55e', fontSize: 10 }}
+                />
+              )}
+              {goalWeight && (
+                <ReferenceLine 
+                  y={goalWeight} 
+                  yAxisId="left" 
+                  stroke="#3b82f6" 
+                  strokeDasharray="3 3" 
+                  label={{ position: 'left', value: 'Goal', fill: '#3b82f6', fontSize: 10 }}
+                />
+              )}
+
               <Area 
                 yAxisId="right"
                 type="monotone" 
@@ -134,6 +157,7 @@ export function CalorieWeightChart({ data }: CalorieWeightChartProps) {
                 stroke="#3b82f6" 
                 strokeWidth={2}
                 dot={{ r: 4 }}
+                connectNulls
               />
             </ComposedChart>
           </ResponsiveContainer>
