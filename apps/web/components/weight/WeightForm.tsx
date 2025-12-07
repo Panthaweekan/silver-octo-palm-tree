@@ -26,19 +26,14 @@ import {
 import { Calendar, Scale, Activity, Ruler, FileText } from 'lucide-react'
 import { useQueryClient } from '@tanstack/react-query'
 
+import { Database } from '@/types/supabase'
+
+type Weight = Database['public']['Tables']['weights']['Row']
+
 interface WeightFormDialogProps {
   userId: string
   children: ReactNode
-  initialData?: {
-    id: string
-    date: string
-    weight_kg: number
-    body_fat_percentage?: number
-    waist_cm?: number
-    hips_cm?: number
-    chest_cm?: number
-    notes?: string
-  }
+  initialData?: Weight
 }
 
 export function WeightFormDialog({ userId, children, initialData }: WeightFormDialogProps) {

@@ -10,15 +10,9 @@ import { formatDuration, formatCalories, formatDistance } from '@/lib/formatters
 import { toast } from '@/hooks/use-toast'
 import { WorkoutType } from '@/lib/constants'
 
-interface Workout {
-  id: string
-  date: string
-  type: WorkoutType
-  duration_minutes: number
-  distance_km?: number
-  calories_burned?: number
-  notes?: string
-}
+import { Database } from '@/types/supabase'
+
+type Workout = Database['public']['Tables']['workouts']['Row']
 
 interface WorkoutCardProps {
   workout: Workout
@@ -26,8 +20,8 @@ interface WorkoutCardProps {
   userWeight: number
 }
 
-function getWorkoutIcon(type: WorkoutType) {
-  const icons = {
+function getWorkoutIcon(type: string) {
+  const icons: Record<string, any> = {
     cardio: Heart,
     strength: Dumbbell,
     hiit: Zap,
@@ -41,8 +35,8 @@ function getWorkoutIcon(type: WorkoutType) {
   return icons[type] || Activity
 }
 
-function getWorkoutColor(type: WorkoutType) {
-  const colors = {
+function getWorkoutColor(type: string) {
+  const colors: Record<string, string> = {
     cardio: 'text-red-600 bg-red-500/10 dark:bg-red-500/20',
     strength: 'text-blue-600 bg-blue-500/10 dark:bg-blue-500/20',
     hiit: 'text-orange-600 bg-orange-500/10 dark:bg-orange-500/20',

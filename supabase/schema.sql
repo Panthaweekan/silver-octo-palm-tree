@@ -204,19 +204,19 @@ ALTER TABLE public.daily_journals ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own profile"
   ON public.profiles
   FOR SELECT
-  USING (auth.uid() = id);
+  USING ((select auth.uid()) = id);
 
 -- Users can update their own profile
 CREATE POLICY "Users can update own profile"
   ON public.profiles
   FOR UPDATE
-  USING (auth.uid() = id);
+  USING ((select auth.uid()) = id);
 
 -- Users can insert their own profile (on signup)
 CREATE POLICY "Users can insert own profile"
   ON public.profiles
   FOR INSERT
-  WITH CHECK (auth.uid() = id);
+  WITH CHECK ((select auth.uid()) = id);
 
 -- =====================================================
 -- WORKOUTS POLICIES
@@ -226,25 +226,25 @@ CREATE POLICY "Users can insert own profile"
 CREATE POLICY "Users can view own workouts"
   ON public.workouts
   FOR SELECT
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 -- Users can insert their own workouts
 CREATE POLICY "Users can insert own workouts"
   ON public.workouts
   FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK ((select auth.uid()) = user_id);
 
 -- Users can update their own workouts
 CREATE POLICY "Users can update own workouts"
   ON public.workouts
   FOR UPDATE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 -- Users can delete their own workouts
 CREATE POLICY "Users can delete own workouts"
   ON public.workouts
   FOR DELETE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 -- =====================================================
 -- MEALS POLICIES
@@ -252,19 +252,19 @@ CREATE POLICY "Users can delete own workouts"
 
 CREATE POLICY "Users can view own meals"
   ON public.meals FOR SELECT
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can insert own meals"
   ON public.meals FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can update own meals"
   ON public.meals FOR UPDATE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can delete own meals"
   ON public.meals FOR DELETE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 -- =====================================================
 -- WEIGHTS POLICIES
@@ -272,19 +272,19 @@ CREATE POLICY "Users can delete own meals"
 
 CREATE POLICY "Users can view own weights"
   ON public.weights FOR SELECT
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can insert own weights"
   ON public.weights FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can update own weights"
   ON public.weights FOR UPDATE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can delete own weights"
   ON public.weights FOR DELETE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 -- =====================================================
 -- HABITS POLICIES
@@ -292,19 +292,19 @@ CREATE POLICY "Users can delete own weights"
 
 CREATE POLICY "Users can view own habits"
   ON public.habits FOR SELECT
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can insert own habits"
   ON public.habits FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can update own habits"
   ON public.habits FOR UPDATE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can delete own habits"
   ON public.habits FOR DELETE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 -- =====================================================
 -- HABIT_LOGS POLICIES
@@ -312,19 +312,19 @@ CREATE POLICY "Users can delete own habits"
 
 CREATE POLICY "Users can view own habit logs"
   ON public.habit_logs FOR SELECT
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can insert own habit logs"
   ON public.habit_logs FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can update own habit logs"
   ON public.habit_logs FOR UPDATE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can delete own habit logs"
   ON public.habit_logs FOR DELETE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 -- =====================================================
 -- DAILY_JOURNALS POLICIES
@@ -332,19 +332,19 @@ CREATE POLICY "Users can delete own habit logs"
 
 CREATE POLICY "Users can view own journals"
   ON public.daily_journals FOR SELECT
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can insert own journals"
   ON public.daily_journals FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can update own journals"
   ON public.daily_journals FOR UPDATE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can delete own journals"
   ON public.daily_journals FOR DELETE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 -- =====================================================
 -- FUNCTIONS & TRIGGERS
@@ -357,7 +357,7 @@ BEGIN
   NEW.updated_at = NOW();
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SET search_path = '';
 
 -- Apply trigger to tables with updated_at column
 CREATE TRIGGER update_profiles_updated_at
@@ -396,7 +396,7 @@ BEGIN
   );
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- Trigger to create profile when user signs up
 CREATE OR REPLACE TRIGGER on_auth_user_created
@@ -462,10 +462,10 @@ CREATE INDEX IF NOT EXISTS todos_user_date_idx ON public.todos(user_id, date DES
 -- RLS
 ALTER TABLE public.todos ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Users can view own todos" ON public.todos FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "Users can insert own todos" ON public.todos FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can update own todos" ON public.todos FOR UPDATE USING (auth.uid() = user_id);
-CREATE POLICY "Users can delete own todos" ON public.todos FOR DELETE USING (auth.uid() = user_id);
+CREATE POLICY "Users can view own todos" ON public.todos FOR SELECT USING ((select auth.uid()) = user_id);
+CREATE POLICY "Users can insert own todos" ON public.todos FOR INSERT WITH CHECK ((select auth.uid()) = user_id);
+CREATE POLICY "Users can update own todos" ON public.todos FOR UPDATE USING ((select auth.uid()) = user_id);
+CREATE POLICY "Users can delete own todos" ON public.todos FOR DELETE USING ((select auth.uid()) = user_id);
 
 CREATE TRIGGER update_todos_updated_at BEFORE UPDATE ON public.todos FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -494,10 +494,10 @@ CREATE INDEX IF NOT EXISTS sleep_logs_date_idx ON public.sleep_logs(date DESC);
 -- RLS
 ALTER TABLE public.sleep_logs ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Users can view own sleep logs" ON public.sleep_logs FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "Users can insert own sleep logs" ON public.sleep_logs FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can update own sleep logs" ON public.sleep_logs FOR UPDATE USING (auth.uid() = user_id);
-CREATE POLICY "Users can delete own sleep logs" ON public.sleep_logs FOR DELETE USING (auth.uid() = user_id);
+CREATE POLICY "Users can view own sleep logs" ON public.sleep_logs FOR SELECT USING ((select auth.uid()) = user_id);
+CREATE POLICY "Users can insert own sleep logs" ON public.sleep_logs FOR INSERT WITH CHECK ((select auth.uid()) = user_id);
+CREATE POLICY "Users can update own sleep logs" ON public.sleep_logs FOR UPDATE USING ((select auth.uid()) = user_id);
+CREATE POLICY "Users can delete own sleep logs" ON public.sleep_logs FOR DELETE USING ((select auth.uid()) = user_id);
 
 CREATE TRIGGER update_sleep_logs_updated_at BEFORE UPDATE ON public.sleep_logs FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
