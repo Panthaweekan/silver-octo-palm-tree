@@ -30,19 +30,15 @@ import { calculateCaloriesBurned, shouldShowDistance } from '@/lib/workout-utils
 import { Calendar, Clock, MapPin, Flame, FileText, Activity } from 'lucide-react'
 import { useQueryClient } from '@tanstack/react-query'
 
+import { Database } from '@/types/supabase'
+
+type Workout = Database['public']['Tables']['workouts']['Row']
+
 interface WorkoutFormDialogProps {
   userId: string
   userWeight: number
   children: ReactNode
-  initialData?: {
-    id: string
-    date: string
-    type: WorkoutType
-    duration_minutes: number
-    distance_km?: number
-    calories_burned?: number
-    notes?: string
-  }
+  initialData?: Workout
 }
 
 export function WorkoutFormDialog({
@@ -53,7 +49,7 @@ export function WorkoutFormDialog({
 }: WorkoutFormDialogProps) {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [selectedType, setSelectedType] = useState<WorkoutType>(initialData?.type || 'cardio')
+  const [selectedType, setSelectedType] = useState<WorkoutType>((initialData?.type as WorkoutType) || 'cardio')
   const router = useRouter()
   const supabase = createClient()
   const queryClient = useQueryClient()

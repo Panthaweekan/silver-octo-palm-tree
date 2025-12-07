@@ -10,16 +10,9 @@ import { WeightFormDialog } from './WeightForm'
 import { formatDate, formatWeight, formatPercentage } from '@/lib/formatters'
 import { toast } from '@/hooks/use-toast'
 
-interface Weight {
-  id: string
-  date: string
-  weight_kg: number
-  body_fat_percentage?: number
-  waist_cm?: number
-  hips_cm?: number
-  chest_cm?: number
-  notes?: string
-}
+import { Database } from '@/types/supabase'
+
+type Weight = Database['public']['Tables']['weights']['Row']
 
 interface WeightListProps {
   weights: Weight[]

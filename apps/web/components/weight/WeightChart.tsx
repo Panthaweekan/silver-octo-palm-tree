@@ -5,10 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { formatDateShort } from '@/lib/formatters'
 
-interface Weight {
-  date: string
-  weight_kg: number
-}
+import { Database } from '@/types/supabase'
+
+type Weight = Database['public']['Tables']['weights']['Row']
 
 interface WeightChartProps {
   weights: Weight[]

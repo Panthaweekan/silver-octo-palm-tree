@@ -4,15 +4,9 @@ import { WorkoutCard } from './WorkoutCard'
 import { WorkoutType } from '@/lib/constants'
 import { useLanguage } from '@/components/providers/LanguageProvider'
 
-interface Workout {
-  id: string
-  date: string
-  type: WorkoutType
-  duration_minutes: number
-  distance_km?: number
-  calories_burned?: number
-  notes?: string
-}
+import { Database } from '@/types/supabase'
+
+type Workout = Database['public']['Tables']['workouts']['Row']
 
 interface WorkoutListProps {
   workouts: Workout[]

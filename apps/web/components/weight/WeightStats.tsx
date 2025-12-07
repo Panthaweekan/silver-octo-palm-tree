@@ -2,12 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Scale, TrendingUp, TrendingDown, Activity } from 'lucide-react'
 import { formatWeight } from '@/lib/formatters'
 
-interface Weight {
-  id: string
-  date: string
-  weight_kg: number
-  body_fat_percentage?: number
-}
+import { Database } from '@/types/supabase'
+
+type Weight = Database['public']['Tables']['weights']['Row']
 
 interface WeightStatsProps {
   weights: Weight[]

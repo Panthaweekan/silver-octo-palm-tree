@@ -22,12 +22,12 @@ CREATE POLICY "Public exercises are viewable by everyone" ON public.exercises
 
 -- 2. Users can read their own custom exercises
 CREATE POLICY "Users can view own custom exercises" ON public.exercises
-  FOR SELECT USING (auth.uid() = created_by);
+  FOR SELECT USING ((select auth.uid()) = created_by);
 
 -- 3. Users can create their own custom exercises
 -- The CHECK ensures they can only create exercises assigned to themselves
 CREATE POLICY "Users can insert own custom exercises" ON public.exercises
-  FOR INSERT WITH CHECK (auth.uid() = created_by);
+  FOR INSERT WITH CHECK ((select auth.uid()) = created_by);
 
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS exercises_name_trgm_idx ON public.exercises using gin (name gin_trgm_ops); -- Requires pg_trgm extension, or just btree for ilike with prefix
