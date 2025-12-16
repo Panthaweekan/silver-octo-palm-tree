@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { useQueryClient } from '@tanstack/react-query'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Pencil, Trash2, TrendingUp, TrendingDown, Minus } from 'lucide-react'
@@ -21,7 +21,7 @@ interface WeightListProps {
 
 export function WeightList({ weights, userId }: WeightListProps) {
   const [deleting, setDeleting] = useState<string | null>(null)
-  const router = useRouter()
+  const queryClient = useQueryClient()
   const supabase = createClient()
 
   async function handleDelete(id: string) {
@@ -40,7 +40,12 @@ export function WeightList({ weights, userId }: WeightListProps) {
 
     toast.success('Weight entry deleted')
     setDeleting(null)
-    router.refresh()
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['weights'] }),
+      queryClient.invalidateQueries({ queryKey: ['diary'] }),
+      queryClient.invalidateQueries({ queryKey: ['daily_summary'] }),
+      queryClient.invalidateQueries({ queryKey: ['timeline_data'] }),
+    ])
   }
 
   function getTrendIndicator(currentWeight: number, previousWeight?: number) {

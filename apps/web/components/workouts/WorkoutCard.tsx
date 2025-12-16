@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { Pencil, Trash2, Dumbbell, Heart, Zap, Wind, Trophy, Footprints, Bike, Waves, Activity } from 'lucide-react'
 import { WorkoutFormDialog } from './WorkoutForm'
@@ -52,7 +52,7 @@ function getWorkoutColor(type: string) {
 
 export function WorkoutCard({ workout, userId, userWeight }: WorkoutCardProps) {
   const [deleting, setDeleting] = useState(false)
-  const router = useRouter()
+  const queryClient = useQueryClient()
   const supabase = createClient()
 
   const Icon = getWorkoutIcon(workout.type)
@@ -73,7 +73,14 @@ export function WorkoutCard({ workout, userId, userWeight }: WorkoutCardProps) {
     }
 
     toast.success('Workout deleted')
-    router.refresh()
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['workouts'] }),
+      queryClient.invalidateQueries({ queryKey: ['diary'] }),
+      queryClient.invalidateQueries({ queryKey: ['daily_summary'] }),
+      queryClient.invalidateQueries({ queryKey: ['timeline_data'] }),
+      queryClient.invalidateQueries({ queryKey: ['recent-items'] }),
+    ])
+    setDeleting(false)
   }
 
   return (

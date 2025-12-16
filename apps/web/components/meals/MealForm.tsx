@@ -29,7 +29,7 @@ import { Calendar, Utensils, Flame, FileText, Beef, Wheat, Droplet } from 'lucid
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { FoodSearch } from './FoodSearch'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, useQuery } from '@tanstack/react-query'
 
 interface MealFormDialogProps {
   userId: string
@@ -66,6 +66,25 @@ export function MealFormDialog({
   const router = useRouter()
   const supabase = createClient()
   const queryClient = useQueryClient()
+  
+  const [saveAsRoutine, setSaveAsRoutine] = useState(false)
+  const [routineName, setRoutineName] = useState('')
+  const [showLoadRoutine, setShowLoadRoutine] = useState(false)
+
+  // Fetch routines
+  const { data: routines } = useQuery({
+    queryKey: ['meal-routines'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('meal_routines')
+        .select('*')
+        .order('name')
+      
+      if (error) throw error
+      return data
+    },
+    enabled: showLoadRoutine
+  })
 
   const isEditing = !!initialData
 
@@ -143,23 +162,49 @@ export function MealFormDialog({
           return
         }
 
+
         toast.success('Meal updated successfully!')
       } else {
         const { error } = await (supabase.from('meals') as any).insert(data)
 
-        if (error) {
-          toast.error(error.message)
-          setLoading(false)
-          return
+        if (error) throw error
+        
+        // Save as routine if checked
+        if (saveAsRoutine && routineName.trim()) {
+           const routineData = {
+              user_id: userId,
+              name: routineName.trim(),
+              meal_type,
+              food_name: foodName,
+              calories: caloriesVal,
+              protein_g,
+              carbs_g,
+              fat_g,
+              notes
+           }
+           const { error: routineError } = await (supabase.from('meal_routines') as any).insert(routineData)
+           if (routineError) {
+             console.error('Error saving routine:', routineError)
+             toast.warning('Meal logged, but failed to save routine.')
+           } else {
+             toast.success('Meal and routine saved!')
+             await queryClient.invalidateQueries({ queryKey: ['meal-routines'] })
+           }
+        } else {
+          toast.success('Meal logged successfully!')
         }
-
-        toast.success('Meal logged successfully!')
       }
 
       setOpen(false)
-      router.refresh()
-      await queryClient.invalidateQueries({ queryKey: ['diary'] })
-      await queryClient.invalidateQueries({ queryKey: ['meals'] })
+      // Comprehensive query invalidation for state sync
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['diary'] }),
+        queryClient.invalidateQueries({ queryKey: ['meals'] }),
+        queryClient.invalidateQueries({ queryKey: ['daily_summary'] }),
+        queryClient.invalidateQueries({ queryKey: ['timeline_data'] }),
+        queryClient.invalidateQueries({ queryKey: ['recent-items'] }),
+        queryClient.invalidateQueries({ queryKey: ['favourites'] }),
+      ])
       
       // Reset form if not editing
       if (!isEditing) {
@@ -168,12 +213,35 @@ export function MealFormDialog({
         setCarbs('')
         setFat('')
         setCalories('')
+        setSaveAsRoutine(false)
+        setRoutineName('')
       }
-    } catch (error) {
-      toast.error('An error occurred. Please try again.')
+    } catch (error: any) {
+      toast.error(error.message || 'An error occurred. Please try again.')
     } finally {
       setLoading(false)
     }
+  }
+
+  const loadRoutine = (routine: any) => {
+    setSelectedType(routine.meal_type as MealType)
+    setFoodName(routine.food_name)
+    setCalories(routine.calories.toString())
+    setProtein(routine.protein_g.toString())
+    setCarbs(routine.carbs_g.toString())
+    setFat(routine.fat_g.toString())
+    
+    // Also update notes if possible, but notes is input
+    setTimeout(() => {
+        const form = document.querySelector('form') as HTMLFormElement
+        if (!form) return
+        
+        const notesInput = form.querySelector('[name="notes"]') as HTMLInputElement
+        if (notesInput) notesInput.value = routine.notes || ''
+    }, 0)
+    
+    setShowLoadRoutine(false)
+    toast.success(`Loaded routine: ${routine.name}`)
   }
 
   const today = new Date().toISOString().split('T')[0]
@@ -181,12 +249,56 @@ export function MealFormDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="w-full max-w-[95vw] sm:max-w-lg md:max-w-xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
-        <DialogHeader>
-          <DialogTitle>{isEditing ? 'Edit Meal' : 'Log Meal'}</DialogTitle>
-          <DialogDescription>
-            {isEditing ? 'Update your meal details' : 'Record what you ate'}
-          </DialogDescription>
+      <DialogContent className="sm:max-w-xl">
+        {showLoadRoutine ? (
+          <>
+             <DialogHeader>
+               <DialogTitle>Load Routine</DialogTitle>
+               <DialogDescription>Select a saved meal routine.</DialogDescription>
+             </DialogHeader>
+             <div className="py-4 max-h-[300px] overflow-y-auto space-y-2">
+                {routines?.length === 0 ? (
+                  <p className="text-center text-muted-foreground text-sm">No routines found.</p>
+                ) : (
+                  routines?.map((routine: any) => (
+                    <Button 
+                      key={routine.id} 
+                      variant="outline" 
+                      className="w-full justify-start text-left flex flex-col items-start h-auto py-2"
+                      onClick={() => loadRoutine(routine)}
+                    >
+                      <span className="font-semibold">{routine.name}</span>
+                       <span className="text-xs text-muted-foreground">
+                         {routine.meal_type} • {routine.food_name} ({routine.calories} kcal)
+                       </span>
+                    </Button>
+                  ))
+                )}
+             </div>
+             <DialogFooter>
+               <Button variant="ghost" onClick={() => setShowLoadRoutine(false)}>Back</Button>
+             </DialogFooter>
+          </>
+        ) : (
+        <>
+        <DialogHeader className="flex flex-row items-center justify-between">
+          <div className="space-y-1">
+            <DialogTitle>{isEditing ? 'Edit Meal' : 'Log Meal'}</DialogTitle>
+            <DialogDescription>
+              {isEditing ? 'Update your meal details' : 'Record what you ate'}
+            </DialogDescription>
+          </div>
+          {!isEditing && (
+              <Button 
+                type="button" 
+                variant="ghost" 
+                size="sm" 
+                className="text-primary gap-1"
+                onClick={() => setShowLoadRoutine(true)}
+              >
+                <FileText className="h-3 w-3" /> Load
+              </Button>
+            )}
         </DialogHeader>
 
         <Tabs defaultValue="manual" className="w-full">
@@ -240,6 +352,7 @@ export function MealFormDialog({
                     <Select
                       name="meal_type"
                       defaultValue={selectedType}
+                      value={selectedType}
                       onValueChange={(value) => setSelectedType(value as MealType)}
                       required
                     >
@@ -367,6 +480,32 @@ export function MealFormDialog({
                     placeholder="Optional notes"
                   />
                 </div>
+                
+                 {/* Save as Routine (only for new entries) */}
+               {!isEditing && (
+                 <div className="flex items-center space-x-2 border-t pt-4">
+                   <div className="flex items-center space-x-2">
+                      <input 
+                        type="checkbox" 
+                        id="save_routine_meal" 
+                        className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                        checked={saveAsRoutine}
+                        onChange={(e) => setSaveAsRoutine(e.target.checked)}
+                      />
+                      <Label htmlFor="save_routine_meal" className="font-normal cursor-pointer">Save as Routine</Label>
+                   </div>
+                   {saveAsRoutine && (
+                     <Input 
+                        className="h-8 flex-1" 
+                        placeholder="Routine Name (e.g. My Breakfast)" 
+                        value={routineName}
+                        onChange={(e) => setRoutineName(e.target.value)}
+                        required={saveAsRoutine}
+                     />
+                   )}
+                 </div>
+               )}
+
               </div>
 
               <DialogFooter>
@@ -380,6 +519,8 @@ export function MealFormDialog({
             </form>
           </TabsContent>
         </Tabs>
+        </>
+        )}
       </DialogContent>
     </Dialog>
   )

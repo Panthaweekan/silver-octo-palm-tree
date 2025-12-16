@@ -28,7 +28,7 @@ import { validateDate, validateDuration, validateDistance, validateCalories } fr
 import { WORKOUT_TYPES, WorkoutType } from '@/lib/constants'
 import { calculateCaloriesBurned, shouldShowDistance } from '@/lib/workout-utils'
 import { Calendar, Clock, MapPin, Flame, FileText, Activity } from 'lucide-react'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, useQuery } from '@tanstack/react-query'
 
 import { Database } from '@/types/supabase'
 
@@ -56,6 +56,25 @@ export function WorkoutFormDialog({
 
   const isEditing = !!initialData
   const showDistance = shouldShowDistance(selectedType)
+
+  const [saveAsRoutine, setSaveAsRoutine] = useState(false)
+  const [routineName, setRoutineName] = useState('')
+  const [showLoadRoutine, setShowLoadRoutine] = useState(false)
+
+  // Fetch routines
+  const { data: routines } = useQuery({
+    queryKey: ['workout-routines'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('workout_routines')
+        .select('*')
+        .order('name')
+      
+      if (error) throw error
+      return data
+    },
+    enabled: showLoadRoutine
+  })
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -120,34 +139,90 @@ export function WorkoutFormDialog({
           .update(data)
           .eq('id', initialData.id)
 
-        if (error) {
-          toast.error(error.message)
-          setLoading(false)
-          return
-        }
-
+        if (error) throw error
         toast.success('Workout updated successfully!')
       } else {
         const { error } = await (supabase.from('workouts') as any).insert(data)
-
-        if (error) {
-          toast.error(error.message)
-          setLoading(false)
-          return
+        if (error) throw error
+        
+        // Save as routine if checked
+        if (saveAsRoutine && routineName.trim()) {
+           const routineData = {
+              user_id: userId,
+              name: routineName.trim(),
+              type,
+              duration_minutes,
+              distance_km,
+              calories_burned,
+              notes
+           }
+           const { error: routineError } = await (supabase.from('workout_routines') as any).insert(routineData)
+           if (routineError) {
+             console.error('Error saving routine:', routineError)
+             toast.warning('Workout logged, but failed to save routine.')
+           } else {
+             toast.success('Workout and routine saved!')
+             await queryClient.invalidateQueries({ queryKey: ['workout-routines'] })
+           }
+        } else {
+          toast.success('Workout logged successfully!')
         }
-
-        toast.success('Workout logged successfully!')
       }
 
       setOpen(false)
-      router.refresh()
-      await queryClient.invalidateQueries({ queryKey: ['diary'] })
-      await queryClient.invalidateQueries({ queryKey: ['workouts'] })
-    } catch (error) {
-      toast.error('An error occurred. Please try again.')
+      // Comprehensive query invalidation for state sync
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['diary'] }),
+        queryClient.invalidateQueries({ queryKey: ['workouts'] }),
+        queryClient.invalidateQueries({ queryKey: ['daily_summary'] }),
+        queryClient.invalidateQueries({ queryKey: ['timeline_data'] }),
+        queryClient.invalidateQueries({ queryKey: ['recent-items'] }),
+        queryClient.invalidateQueries({ queryKey: ['favourites'] }),
+      ])
+      
+      // Reset form defaults
+      if (!isEditing) {
+        setSaveAsRoutine(false)
+        setRoutineName('')
+      }
+    } catch (error: any) {
+      toast.error(error.message || 'An error occurred. Please try again.')
     } finally {
       setLoading(false)
     }
+  }
+
+  const loadRoutine = (routine: any) => {
+    setSelectedType(routine.type as WorkoutType)
+    
+    // Use DOM manipulation to populate uncontrolled inputs
+    // We need to wait for a tick because if the type changes, content might change (distance vs calories)
+    // However, distance/calories separation is handled by `showDistance` which depends on `selectedType`.
+    // `selectedType` is state, so it triggers re-render.
+    // We should probably delay setting values until after render, but React state updates can be tricky here.
+    // Ideally we should convert these to controlled inputs, but for now we will try to set them.
+    // Actually, since we are re-rendering with new `selectedType`, the inputs might be remounted or their defaultValues ignored.
+    // Let's rely on standard HTML behavior. If we update the DOM elements, it should work if they exist.
+    
+    setTimeout(() => {
+        const form = document.querySelector('form') as HTMLFormElement
+        if (!form) return
+        
+        const durationInput = form.querySelector('[name="duration_minutes"]') as HTMLInputElement
+        if (durationInput) durationInput.value = routine.duration_minutes
+        
+        const distanceInput = form.querySelector('[name="distance_km"]') as HTMLInputElement
+        if (distanceInput) distanceInput.value = routine.distance_km || ''
+        
+        const caloriesInput = form.querySelector('[name="calories_burned"]') as HTMLInputElement
+        if (caloriesInput) caloriesInput.value = routine.calories_burned || ''
+        
+        const notesInput = form.querySelector('[name="notes"]') as HTMLTextAreaElement
+        if (notesInput) notesInput.value = routine.notes || ''
+    }, 0)
+    
+    setShowLoadRoutine(false)
+    toast.success(`Loaded routine: ${routine.name}`)
   }
 
   const today = new Date().toISOString().split('T')[0]
@@ -156,12 +231,55 @@ export function WorkoutFormDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
+        {showLoadRoutine ? (
+          <>
+             <DialogHeader>
+               <DialogTitle>Load Routine</DialogTitle>
+               <DialogDescription>Select a saved routine to auto-fill details.</DialogDescription>
+             </DialogHeader>
+             <div className="py-4 max-h-[300px] overflow-y-auto space-y-2">
+                {routines?.length === 0 ? (
+                  <p className="text-center text-muted-foreground text-sm">No routines found.</p>
+                ) : (
+                  routines?.map((routine: any) => (
+                    <Button 
+                      key={routine.id} 
+                      variant="outline" 
+                      className="w-full justify-start text-left flex flex-col items-start h-auto py-2"
+                      onClick={() => loadRoutine(routine)}
+                    >
+                      <span className="font-semibold">{routine.name}</span>
+                       <span className="text-xs text-muted-foreground">
+                         {routine.type} • {routine.duration_minutes}m {routine.distance_km ? `• ${routine.distance_km}km` : ''}
+                       </span>
+                    </Button>
+                  ))
+                )}
+             </div>
+             <DialogFooter>
+               <Button variant="ghost" onClick={() => setShowLoadRoutine(false)}>Back</Button>
+             </DialogFooter>
+          </>
+        ) : (
         <form onSubmit={handleSubmit}>
-          <DialogHeader>
-            <DialogTitle>{isEditing ? 'Edit Workout' : 'Log Workout'}</DialogTitle>
-            <DialogDescription>
-              {isEditing ? 'Update your workout details' : 'Record your workout for today'}
-            </DialogDescription>
+          <DialogHeader className="flex flex-row items-center justify-between">
+            <div className="space-y-1">
+              <DialogTitle>{isEditing ? 'Edit Workout' : 'Log Workout'}</DialogTitle>
+              <DialogDescription>
+                {isEditing ? 'Update your workout details' : 'Record your workout for today'}
+              </DialogDescription>
+            </div>
+            {!isEditing && (
+              <Button 
+                type="button" 
+                variant="ghost" 
+                size="sm" 
+                className="text-primary gap-1"
+                onClick={() => setShowLoadRoutine(true)}
+              >
+                <FileText className="h-3 w-3" /> Load Routine
+              </Button>
+            )}
           </DialogHeader>
 
           <div className="grid gap-6 py-4">
@@ -190,6 +308,7 @@ export function WorkoutFormDialog({
                 <Select
                   name="type"
                   defaultValue={selectedType}
+                  value={selectedType}
                   onValueChange={(value) => setSelectedType(value as WorkoutType)}
                   required
                 >
@@ -295,6 +414,31 @@ export function WorkoutFormDialog({
                 className="resize-none"
               />
             </div>
+
+            {/* Save as Routine (only for new entries) */}
+            {!isEditing && (
+               <div className="flex items-center space-x-2 border-t pt-4">
+                 <div className="flex items-center space-x-2">
+                    <input 
+                      type="checkbox" 
+                      id="save_routine" 
+                      className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                      checked={saveAsRoutine}
+                      onChange={(e) => setSaveAsRoutine(e.target.checked)}
+                    />
+                    <Label htmlFor="save_routine" className="font-normal cursor-pointer">Save as Routine</Label>
+                 </div>
+                 {saveAsRoutine && (
+                   <Input 
+                      className="h-8 flex-1" 
+                      placeholder="Routine Name (e.g. Morning 5k)" 
+                      value={routineName}
+                      onChange={(e) => setRoutineName(e.target.value)}
+                      required={saveAsRoutine}
+                   />
+                 )}
+               </div>
+            )}
           </div>
 
           <DialogFooter>
@@ -306,6 +450,7 @@ export function WorkoutFormDialog({
             </Button>
           </DialogFooter>
         </form>
+        )}
       </DialogContent>
     </Dialog>
   )

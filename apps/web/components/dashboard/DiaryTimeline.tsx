@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { Apple, Dumbbell, Scale, CheckCircle2, Circle, Clock, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -41,7 +41,7 @@ interface DiaryTimelineProps {
 }
 
 export function DiaryTimeline({ userId, meals, workouts, weights, habitLogs, habits }: DiaryTimelineProps) {
-  const router = useRouter()
+  const queryClient = useQueryClient()
   const supabase = createClient()
   
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -122,7 +122,15 @@ export function DiaryTimeline({ userId, meals, workouts, weights, habitLogs, hab
         if (error) throw error
         
         toast.success('Item deleted successfully')
-        router.refresh()
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: ['diary'] }),
+          queryClient.invalidateQueries({ queryKey: ['meals'] }),
+          queryClient.invalidateQueries({ queryKey: ['workouts'] }),
+          queryClient.invalidateQueries({ queryKey: ['weights'] }),
+          queryClient.invalidateQueries({ queryKey: ['habits'] }),
+          queryClient.invalidateQueries({ queryKey: ['timeline_data'] }),
+          queryClient.invalidateQueries({ queryKey: ['daily_summary'] }),
+        ])
       }
     } catch (error) {
       console.error('Error deleting item:', error)

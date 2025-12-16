@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { Pencil, Trash2, Utensils, Coffee, Cookie, UtensilsCrossed } from 'lucide-react'
 import { MealFormDialog } from './MealForm'
@@ -49,7 +49,7 @@ function getMealColor(type: MealType) {
 
 export function MealCard({ meal, userId }: MealCardProps) {
   const [deleting, setDeleting] = useState(false)
-  const router = useRouter()
+  const queryClient = useQueryClient()
   const supabase = createClient()
 
   const Icon = getMealIcon(meal.meal_type)
@@ -70,7 +70,14 @@ export function MealCard({ meal, userId }: MealCardProps) {
     }
 
     toast.success('Meal deleted')
-    router.refresh()
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['meals'] }),
+      queryClient.invalidateQueries({ queryKey: ['diary'] }),
+      queryClient.invalidateQueries({ queryKey: ['daily_summary'] }),
+      queryClient.invalidateQueries({ queryKey: ['timeline_data'] }),
+      queryClient.invalidateQueries({ queryKey: ['recent-items'] }),
+    ])
+    setDeleting(false)
   }
 
   return (
