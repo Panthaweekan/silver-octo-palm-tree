@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -62,7 +62,7 @@ type JournalFormProps = {
 
 export function JournalForm({ userId, existingEntry }: JournalFormProps) {
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
+  const queryClient = useQueryClient()
   const supabase = createClient()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -107,7 +107,10 @@ export function JournalForm({ userId, existingEntry }: JournalFormProps) {
         toast.success('Journal entry created!')
       }
 
-      router.refresh()
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['journals'] }),
+        queryClient.invalidateQueries({ queryKey: ['diary'] }),
+      ])
     } catch (error) {
       console.error('Error saving journal:', error)
       toast.error('Failed to save journal entry')

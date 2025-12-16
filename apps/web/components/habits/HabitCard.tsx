@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Check, Plus, Minus, Trash2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
 import { toast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
 import { useQueryClient } from '@tanstack/react-query'
@@ -26,7 +25,6 @@ interface HabitCardProps {
 
 export function HabitCard({ habit, log, userId }: HabitCardProps) {
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
   const supabase = createClient()
   const queryClient = useQueryClient()
   // const { toast } = useToast() // Removed, importing directly
@@ -64,8 +62,11 @@ export function HabitCard({ habit, log, userId }: HabitCardProps) {
         if (error) throw error
       }
 
-      router.refresh()
-      await queryClient.invalidateQueries({ queryKey: ['diary'] })
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['habits'] }),
+        queryClient.invalidateQueries({ queryKey: ['diary'] }),
+        queryClient.invalidateQueries({ queryKey: ['daily_summary'] }),
+      ])
     } catch (error) {
       console.error('Error updating habit:', error)
       toast.error('Failed to update habit')
@@ -105,8 +106,10 @@ export function HabitCard({ habit, log, userId }: HabitCardProps) {
                     .delete()
                     .eq('id', habit.id)
                   if (error) throw error
-                  router.refresh()
-                  await queryClient.invalidateQueries({ queryKey: ['diary'] })
+                  await Promise.all([
+                    queryClient.invalidateQueries({ queryKey: ['habits'] }),
+                    queryClient.invalidateQueries({ queryKey: ['diary'] }),
+                  ])
                   toast.success('Habit deleted')
                 } catch (error) {
                   console.error('Error deleting habit:', error)

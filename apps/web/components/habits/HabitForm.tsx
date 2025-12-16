@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -35,7 +34,6 @@ type FormValues = z.infer<typeof formSchema>
 
 export function HabitForm({ userId }: { userId: string }) {
   const [open, setOpen] = useState(false)
-  const router = useRouter()
   const supabase = createClient()
   const queryClient = useQueryClient()
 
@@ -68,8 +66,10 @@ export function HabitForm({ userId }: { userId: string }) {
       toast.success('Habit created successfully!')
       setOpen(false)
       reset()
-      router.refresh()
-      await queryClient.invalidateQueries({ queryKey: ['diary'] })
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['habits'] }),
+        queryClient.invalidateQueries({ queryKey: ['diary'] }),
+      ])
     } catch (error) {
       console.error('Error creating habit:', error)
       toast.error('Failed to create habit')
