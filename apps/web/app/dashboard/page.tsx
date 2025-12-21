@@ -176,7 +176,7 @@ export default function DashboardPage() {
         {/* -- PRIMARY FOCUS -- */}
 
         {/* 1. Goals/Nutrition Card (Top Left - 2x2) */}
-        <div className="md:col-span-2 md:row-span-2 h-full">
+        <div className="md:col-span-2 md:row-span-2 h-full animate-fade-in-up" style={{ animationDelay: '0ms' }}>
             {summaryLoading || !summary ? (
                 <Skeleton className="w-full h-full rounded-3xl" />
             ) : (
@@ -189,19 +189,21 @@ export default function DashboardPage() {
         </div>
 
         {/* 2. Workout Quick Start (Top Right - 2x1) */}
-        <div className="md:col-span-2 lg:col-span-1 md:row-span-1 h-full min-h-[180px]">
+        <div className="md:col-span-2 lg:col-span-1 md:row-span-1 h-full min-h-[180px] animate-fade-in-up" style={{ animationDelay: '100ms' }}>
            {summaryLoading ? (
                <Skeleton className="w-full h-full rounded-3xl" />
            ) : (
               <WorkoutQuickStartCard 
                 workoutCount={summary?.workout_count || 0} 
                 lastWorkoutName={lastWorkout?.name || lastWorkout?.type}
+                userId={user?.id || ''}
+                userWeight={(weightData?.latest as any)?.weight_kg || 70}
               />
            )}
         </div>
 
         {/* 3. Weight Mini Chart (Top Far Right - 1x1) */}
-        <div className="md:col-span-2 lg:col-span-1 md:row-span-1 h-full min-h-[180px]">
+        <div className="md:col-span-2 lg:col-span-1 md:row-span-1 h-full min-h-[180px] animate-fade-in-up" style={{ animationDelay: '150ms' }}>
             {weightLoading || !weightData ? (
                  <Skeleton className="w-full h-full rounded-3xl" />
             ) : (
@@ -216,7 +218,7 @@ export default function DashboardPage() {
         {/* -- SECONDARY / CONTEXT -- */}
 
         {/* 4. Habits (Span full width below top row or 2 cols) */}
-        <div className="col-span-1 md:col-span-2 lg:col-span-2 row-span-1">
+        <div className="col-span-1 md:col-span-2 lg:col-span-2 row-span-1 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
              {habitsLoading || !habitsData ? (
                  <Skeleton className="w-full h-[140px] rounded-3xl" />
              ) : (
@@ -232,7 +234,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Timeline (Full Width at Bottom) */}
-        <div className="col-span-1 md:col-span-2 lg:col-span-4 mt-4">
+        <div className="col-span-1 md:col-span-2 lg:col-span-4 mt-4 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
              {timelineLoading || !timeline ? (
                  <div className="space-y-4">
                      <Skeleton className="w-full h-12 rounded-xl" />
