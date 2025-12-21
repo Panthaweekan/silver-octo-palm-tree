@@ -186,7 +186,7 @@ export function BottomNav({ userId, userWeight = 70 }: BottomNavProps) {
       </div>
 
       {/* Bottom Navigation Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-30 bg-background/95 backdrop-blur-xl border-t border-border lg:hidden safe-area-bottom">
+      <nav className="fixed-bottom-ios left-0 right-0 z-30 bg-background/95 backdrop-blur-xl border-t border-border lg:hidden">
         <div className="flex items-center justify-around h-16 px-4">
           {/* Home */}
           <Link

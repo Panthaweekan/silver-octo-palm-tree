@@ -18,7 +18,7 @@ const DialogOverlay = React.forwardRef<
 >(({ className = '', ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    className={`fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 ${className}`}
+    className={`fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 duration-300 ${className}`}
     {...props}
   />
 ))
@@ -32,12 +32,12 @@ const DialogContent = React.forwardRef<
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
-      className={`fixed z-50 grid w-full gap-4 border bg-background shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out
+      className={`fixed z-[60] grid w-full gap-4 border bg-background/95 backdrop-blur-xl shadow-2xl duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out
         /* Mobile: slide up from bottom, full width */
-        left-0 bottom-0 max-h-[90vh] overflow-y-auto rounded-t-2xl p-4
+        left-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-[1.5rem] p-5 pb-safe-area-bottom
         data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom
         /* Desktop: centered dialog */
-        sm:left-[50%] sm:top-[50%] sm:bottom-auto sm:translate-x-[-50%] sm:translate-y-[-50%] sm:max-w-lg sm:rounded-lg sm:p-6
+        sm:left-[50%] sm:top-[50%] sm:bottom-auto sm:translate-x-[-50%] sm:translate-y-[-50%] sm:max-w-lg sm:rounded-[1.25rem] sm:p-8 sm:max-h-[90vh]
         sm:data-[state=closed]:fade-out-0 sm:data-[state=open]:fade-in-0 sm:data-[state=closed]:zoom-out-95 sm:data-[state=open]:zoom-in-95 sm:data-[state=closed]:slide-out-to-left-1/2 sm:data-[state=closed]:slide-out-to-top-[48%] sm:data-[state=open]:slide-in-from-left-1/2 sm:data-[state=open]:slide-in-from-top-[48%]
         ${className}`}
       {...props}
